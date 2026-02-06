@@ -2,9 +2,9 @@
 .turbo
 
 # compiled output
-/dist
+apps/**/dist
+packages/**/dist
 node_modules
-/build
 
 # Logs
 logs
