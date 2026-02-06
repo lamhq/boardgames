@@ -10,7 +10,6 @@
     "lint": "eslint \"src/**/*.ts\""
   },
   "dependencies": {
-    "@repo/ui": "workspace:*",
     "boardgame.io": "^0.50.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
