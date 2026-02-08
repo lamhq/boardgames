@@ -1,0 +1,14 @@
+{
+  "name": "@boardgames/terraform",
+  "version": "0.0.1",
+  "description": "Terraform configuration for AWS infrastructure",
+  "private": true,
+  "scripts": {
+    "init": "terraform init -backend-config=backend.tfvars -reconfigure -upgrade && terraform workspace new dev && terraform workspace select dev",
+    "plan": "terraform plan -var-file=\"params.tfvars\"",
+    "apply": "terraform apply -var-file=\"params.tfvars\" --auto-approve",
+    "destroy": "terraform destroy -var-file=\"params.tfvars\"",
+    "fmt": "terraform fmt -recursive",
+    "validate": "terraform validate"
+  }
+}
