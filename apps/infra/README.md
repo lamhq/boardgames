@@ -13,14 +13,18 @@ This directory contains Terraform configuration for AWS infrastructure that powe
 
 ```
 .
-├── main.tf              # Main Terraform configuration
-├── variables.tf         # Input variables
-├── outputs.tf          # Output values
-├── provider.tf         # AWS provider configuration
-├── iam.tf              # IAM roles and policies
-├── lambda.tf           # Lambda function configuration
-├── api-gateway.tf      # API Gateway WebSocket configuration
-├── lambda_placeholder.zip  # Placeholder Lambda function (replace with your code)
+├── provider.tf         # AWS & Terraform provider configuration
+├── variables.tf        # Input variables (region, project, environment)
+├── locals.tf           # Local values (env, name_prefix)
+├── main.tf             # (commented out - locals moved to locals.tf)
+├── lambda.tf           # Lambda function, IAM role, and CloudWatch logs
+├── api-gateway.tf      # API Gateway WebSocket, routes, integration
+├── outputs.tf          # Output values (endpoint, function name)
+├── backend.tf          # Terraform backend configuration
+├── backend.tfvars      # Backend state bucket credentials
+├── params.tfvars       # Terraform variable overrides
+├── lambda-handler.js   # Lambda handler source code
+├── package.json        # NPM scripts for Terraform commands
 └── README.md           # This file
 ```
 
@@ -31,166 +35,252 @@ This directory contains Terraform configuration for AWS infrastructure that powe
 
 ## Setup Instructions
 
-### 1. Create Lambda Deployment Package
+### 1. Configure AWS Credentials
 
-Create a `lambda_placeholder.zip` file with your Lambda function code. The file should contain an `index.js` (or compiled JavaScript) with a handler function.
-
-Example minimal handler:
-```javascript
-exports.handler = async (event) => {
-  console.log('Event:', JSON.stringify(event));
-  return { statusCode: 200, body: 'Success' };
-};
+Ensure AWS CLI is configured with appropriate credentials:
+```bash
+aws configure
+# or set environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 ```
 
-Package it:
-```bash
-zip lambda_placeholder.zip index.js
+### 2. Configure Deployment Parameters
+
+Edit `params.tfvars` to customize your deployment:
+```hcl
+aws_region = "us-east-1"
+project    = "boardgames"
+environment = "dev"
 ```
 
-### 2. Initialize Terraform
+### 3. Initialize Terraform
 
 ```bash
-terraform init
+pnpm run init
+# or manually: terraform init -backend-config=backend.tfvars -reconfigure -upgrade
 ```
 
-### 3. Plan Deployment
+### 4. Plan Deployment
 
 ```bash
-terraform plan
+pnpm run plan
 ```
 
 Review the planned changes.
 
-### 4. Apply Configuration
+### 5. Apply Configuration
 
 ```bash
-terraform apply
+pnpm run apply
 ```
 
-### 5. Retrieve Outputs
+Terraform will automatically:
+- Archive `lambda-handler.js` into `game_handler.zip`
+- Create all AWS resources
+- Output the WebSocket endpoint
 
-After successful deployment, get the WebSocket API endpoint:
+### 6. Retrieve Outputs
 
+After successful deployment:
 ```bash
 terraform output api_gateway_endpoint
+terraform output lambda_function_name
 ```
 
-## Environment Variables
+## Configuration Variables
 
-Customize the deployment by setting Terraform variables:
+Customize deployment via `params.tfvars` or command-line variables:
 
 ```bash
-terraform apply \
-  -var="aws_region=us-west-2" \
-  -var="environment=staging" \
-  -var="lambda_memory_size=512"
+pnpm run plan -- -var="aws_region=us-west-2" -var="project=mygame" -var="environment=prod"
 ```
 
 Or create a `terraform.tfvars` file:
 
 ```hcl
-aws_region    = "us-east-1"
-environment   = "dev"
-lambda_memory_size = 256
+aws_region = "us-west-2"
+project    = "mygame"
+environment = "prod"
 ```
 
-## Variables
+### Available Variables
 
-- `aws_region` - AWS region (default: us-east-1)
-- `environment` - Environment name (default: dev)
-- `api_gateway_name` - API Gateway name (default: boardgames-websocket-api)
-- `lambda_function_name` - Lambda function name (default: boardgames-websocket-handler)
-- `lambda_runtime` - Lambda runtime version (default: nodejs20.x)
-- `lambda_timeout` - Lambda timeout in seconds (default: 30)
-- `lambda_memory_size` - Lambda memory in MB (default: 256)
+- `aws_region` - AWS region for deployment (default: `us-east-1`)
+- `project` - Project name, used in resource naming (default: `boardgames`)
+- `environment` - Environment name: dev, staging, prod (default: `dev`)
+
+### Computed Values
+
+- `local.env` - Environment qualifier based on Terraform workspace
+- `local.name_prefix` - Resource prefix: `${project}-${env}` (e.g., `boardgames-dev`)
 
 ## Testing the WebSocket API
 
-Once deployed, test the WebSocket endpoint:
+Once deployed, test the WebSocket endpoint using [wscat](https://github.com/TooTallNate/ws#cli):
 
 ```bash
+# Install wscat globally
+npm install -g wscat
+
 # Get the endpoint
 ENDPOINT=$(terraform output -raw api_gateway_endpoint)
 
-# Using wscat (install with: npm install -g wscat)
+# Connect to WebSocket
 wscat -c $ENDPOINT
+
+# In the wscat prompt, send a message
+Connected (press CTRL+C to quit)
+> {"action": "sendMessage", "message": "Hello!"}
+< {"message":"Message received"}
 ```
+
+## Outputs
+
+After deployment, Terraform outputs:
+
+- `api_gateway_endpoint` - WebSocket URI including stage (e.g., `wss://xxx.execute-api.region.amazonaws.com/dev`)
+- `lambda_function_name` - Lambda function name for CI/CD integration (e.g., `boardgames-dev-game-handler`)
 
 ## Managing State
 
-Terraform state is stored locally by default. For production:
+The Terraform state is stored using the backend defined in `backend.tf`. By default, it's configured for S3 + DynamoDB.
 
-1. **Configure Remote State** - Use S3 + DynamoDB for state locking
-2. **Protect Sensitive Data** - Ensure state files are encrypted and access-controlled
-3. **Version Control** - Store `.tf` files in Git, but NOT `terraform.tfstate`
+### Configure Remote State
 
-Example remote state configuration:
-
+Edit `backend.tfvars` with your S3 bucket details:
 ```hcl
-terraform {
-  backend "s3" {
-    bucket         = "your-terraform-state-bucket"
-    key            = "boardgames/terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "terraform-locks"
-    encrypt        = true
-  }
-}
+bucket         = "your-terraform-state-bucket"
+key            = "boardgames/terraform.tfstate"
+region         = "us-east-1"
+dynamodb_table = "terraform-locks"
+encrypt        = true
 ```
+
+Then initialize:
+```bash
+pnpm run init
+```
+
+### Local State Only
+
+To use local state (for development):
+1. Comment out the `backend "s3"` block in `backend.tf`
+2. Run `terraform init -migrate-state`
+
+### State Management Best Practices
+
+- ✅ Encrypt state files at rest
+- ✅ Enable state locking with DynamoDB
+- ✅ Restrict IAM access to state bucket
+- ✅ Enable S3 versioning for state recovery
+- ✅ Never commit `terraform.tfstate` files to Git
+- ✅ Use `.gitignore` to exclude state files
 
 ## Useful Commands
 
 ```bash
-# Validate configuration
-terraform validate
+# Validate Terraform code
+pnpm run validate
 
-# Format code
-terraform fmt -recursive
+# Format Terraform files
+pnpm run fmt
+
+# Plan changes without applying
+pnpm run plan
+
+# Apply changes
+pnpm run apply
+
+# Destroy all resources
+pnpm run destroy
 
 # Show current state
 terraform show
 
-# Destroy all resources
-terraform destroy
+# Refresh state from AWS
+terraform refresh
+
+# Workspace management
+terraform workspace new <env>      # Create new workspace
+terraform workspace select <env>   # Switch workspace
+terraform workspace list           # List workspaces
+```
+
+## Infrastructure Overview
+
+### API Gateway WebSocket API
+
+- **Protocol**: WebSocket (wss://)
+- **Route Selection**: Based on `$request.body.action`
+- **Routes Supported**:
+  - `$connect` - New client connects
+  - `$disconnect` - Client disconnects
+  - `$default` - Any message not matching above
+- **Stage**: Auto-deploy enabled with throttling (2000 req/s, 5000 burst)
+- **Logging**: CloudWatch Logs with 7-day retention
+
+### Lambda Function
+
+- **Runtime**: Node.js 24.x
+- **Memory**: 256 MB (hardcoded)
+- **Timeout**: 30 seconds (hardcoded)
+- **Handler**: `handler.handler` (from `lambda-handler.js`)
+- **Logging**: CloudWatch Logs with 14-day retention
+- **Permissions**: CloudWatch Logs only (least privilege)
+
+### IAM Security
+
+- Lambda role has **no API Gateway permissions** (invoked via resource-based policy)
+- API Gateway has explicit Lambda invoke permission
+- Lambda logs via CloudWatch with minimal required permissions
+- No database or external service access
+
+## Cost Optimization
+
+- Lambda is configured with 256 MB memory and 30s timeout (hardcoded for consistency)
+- CloudWatch Log Groups have 7-day (API Gateway) and 14-day (Lambda) retention—adjust as needed
+- API Gateway throttling prevents runaway costs (2000 req/s default)
+- Monitor actual usage in CloudWatch Metrics and AWS Cost Explorer
+
+## Troubleshooting
+
+### Lambda not being invoked
+
+- Check Lambda permission: `aws lambda get-policy --function-name boardgames-dev-game-handler`
+- Verify API Gateway integration references correct Lambda ARN
+- Check CloudWatch logs: `/aws/apigateway/boardgames-dev-game-api`
+
+### WebSocket connection fails
+
+- Verify stage is deployed: `aws apigatewayv2 get-stage --api-id <API_ID> --stage-name dev`
+- Check browser console for WebSocket errors
+- Verify endpoint includes stage: `wss://xxx.execute-api.region.amazonaws.com/dev` (not just `.../`)
+
+### Terraform state issues
+
+```bash
+# Release a stuck state lock
+terraform force-unlock <LOCK_ID>
+
+# View current state
+terraform state show
 
 # Refresh state from AWS
 terraform refresh
 ```
 
-## Security Considerations
+### Lambda handler not found
 
-- Lambda has minimal IAM permissions (only CloudWatch Logs)
-- API Gateway has throttling enabled (rate limit: 2000, burst: 5000)
-- CloudWatch logs have 14-day retention
-- All resources use default VPC (modify if needed for private deployments)
+- Verify `lambda-handler.js` exists in the infra directory
+- Check that `exports.handler` is defined in the file
+- Terraform will auto-zip on next `terraform plan/apply`
 
-## Cost Optimization
+### Permission denied errors
 
-- Adjust `lambda_memory_size` based on actual needs
-- Review CloudWatch log retention policies
-- Monitor API Gateway data transfer
-
-## Troubleshooting
-
-### Lambda is not being invoked
-
-- Check API Gateway stage integration target
-- Verify Lambda permission with `aws lambda get-policy`
-- Check CloudWatch logs: `/aws/apigateway/boardgames-websocket-api`
-
-### WebSocket connection fails
-
-- Verify API Gateway stage is deployed
-- Check browser WebSocket client for connection errors
-- Review API Gateway access logs
-
-### Deployment fails with state lock
-
-```bash
-# Release a stuck lock
-terraform force-unlock <LOCK_ID>
-```
+- Ensure AWS credentials have IAM permissions to create:
+  - API Gateway resources
+  - Lambda functions
+  - IAM roles and policies
+  - CloudWatch Log Groups
 
 ## Additional Resources
 

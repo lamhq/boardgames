@@ -1,10 +1,3 @@
-# Archive lambda-handler.js for Lambda deployment
-data "archive_file" "game_handler_zip" {
-  type        = "zip"
-  source_file = "${path.module}/lambda-handler.js"
-  output_path = "${path.module}/game_handler.zip"
-}
-
 # IAM role for Lambda function
 resource "aws_iam_role" "game_handler_role" {
   name = "${local.name_prefix}-game-handler-role"
@@ -52,11 +45,18 @@ resource "aws_cloudwatch_log_group" "game_handler_log_group" {
   depends_on = [aws_iam_role_policy.game_handler_logs_policy]
 }
 
+# Archive game-handler.js for Lambda deployment
+data "archive_file" "game_handler_zip" {
+  type        = "zip"
+  source_file = "${path.module}/game-handler.js"
+  output_path = "${path.module}/game_handler.zip"
+}
+
 # Lambda function for WebSocket handler
 resource "aws_lambda_function" "game_handler" {
   function_name = "${local.name_prefix}-game-handler"
   role          = aws_iam_role.game_handler_role.arn
-  handler       = "lambda-handler.handler"
+  handler       = "game-handler.handler"
   runtime       = "nodejs24.x"
   timeout       = 30
   memory_size   = 256
