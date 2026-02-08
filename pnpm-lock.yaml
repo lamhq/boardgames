@@ -29,6 +29,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^11.0.1
         version: 11.1.13(@nestjs/common@11.1.13)(@nestjs/core@11.1.13)
+      boardgame.io:
+        specifier: ^0.50.2
+        version: 0.50.2
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
