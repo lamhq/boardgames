@@ -97,4 +97,8 @@ resource "aws_s3_object" "index_html_file" {
   source       = "${path.module}/index.html"
   content_type = "text/html"
   etag         = filemd5("${path.module}/index.html")
+
+  lifecycle {
+    ignore_changes = [etag, source]
+  }
 }
