@@ -1,6 +1,6 @@
 name: Web CI
 
-# Required CI Variables (GitHub Settings > Actions > Variables):
+# Required CI Variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
 # - CI_ROLE_ARN: AWS IAM role ARN for OIDC authentication
 # - AWS_REGION: AWS region for deployment (e.g., us-east-1)
 # - AWS_S3_BUCKET: S3 bucket name for hosting the built assets

@@ -38,7 +38,7 @@ resource "aws_iam_role" "ci_role" {
 
 resource "aws_iam_policy" "deploy_code_policy" {
   name        = "${local.name_prefix}-code-deploy-policy"
-  description = "Permissions to deploy code for the web app"
+  description = "Permissions to deploy code"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -46,11 +46,22 @@ resource "aws_iam_policy" "deploy_code_policy" {
       # update files to s3
       {
         Effect = "Allow"
-        Action = ["s3:*"]
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject", 
+          "s3:DeleteObject",
+          "s3:ListBucket"
+        ]
         Resource = [
           "${aws_s3_bucket.app_bucket.arn}",
           "${aws_s3_bucket.app_bucket.arn}/*",
         ]
+      },
+      # create cloudfront invalidations
+      {
+        Effect = "Allow"
+        Action = ["cloudfront:CreateInvalidation"]
+        Resource = "${aws_cloudfront_distribution.web_distribution.arn}"
       }
     ]
   })
