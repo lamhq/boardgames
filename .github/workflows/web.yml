@@ -75,6 +75,14 @@ jobs:
         role-to-assume: ${{ vars.CI_ROLE_ARN }}
         aws-region: ${{ vars.AWS_REGION }}
 
+    - name: Debug AWS credentials
+      run: |
+        echo "AWS_ACCESS_KEY_ID is set: ${{ env.AWS_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
+        echo "AWS_SECRET_ACCESS_KEY is set: ${{ env.AWS_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
+        echo "AWS_SESSION_TOKEN is set: ${{ env.AWS_SESSION_TOKEN != '' && 'YES' || 'NO' }}"
+        echo "AWS_REGION: ${{ env.AWS_REGION }}"
+        echo "AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}"
+
     - name: Sync build to S3
       uses: jakejarvis/s3-sync-action@master
       with:
