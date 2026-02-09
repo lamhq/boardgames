@@ -4,6 +4,7 @@ name: Web CI
 # - CI_ROLE_ARN: AWS IAM role ARN for OIDC authentication
 # - AWS_REGION: AWS region for deployment (e.g., us-east-1)
 # - AWS_S3_BUCKET: S3 bucket name for hosting the built assets
+# - CLOUDFRONT_DISTRIBUTION_ID: CloudFront distribution ID for cache invalidation
 
 env:
   BUILD_OUTPUT_PATH: apps/web/dist/
@@ -22,7 +23,6 @@ on:
     branches: [ main ]
     paths:
       - 'apps/web/**'
-      - '.github/workflows/*'
 
 permissions:
   id-token: write  # Allows OIDC token requests
@@ -75,16 +75,15 @@ jobs:
         role-to-assume: ${{ vars.CI_ROLE_ARN }}
         aws-region: ${{ vars.AWS_REGION }}
 
-    - name: Debug AWS credentials
-      run: |
-        echo "AWS_ACCESS_KEY_ID is set: ${{ env.AWS_ACCESS_KEY_ID != '' && 'YES' || 'NO' }}"
-        echo "AWS_SECRET_ACCESS_KEY is set: ${{ env.AWS_SECRET_ACCESS_KEY != '' && 'YES' || 'NO' }}"
-        echo "AWS_SESSION_TOKEN is set: ${{ env.AWS_SESSION_TOKEN != '' && 'YES' || 'NO' }}"
-        echo "AWS_REGION: ${{ env.AWS_REGION }}"
-        echo "AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}"
-
     - name: Sync build to S3
       run: |
         aws s3 sync ${{ env.BUILD_OUTPUT_PATH }} s3://${{ vars.AWS_S3_BUCKET }}/build \
           --delete \
+          --region ${{ vars.AWS_REGION }}
+
+    - name: Invalidate CloudFront cache
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
+          --paths "/index.html" \
           --region ${{ vars.AWS_REGION }}

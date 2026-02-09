@@ -18,6 +18,11 @@ output "web_app_url" {
   value       = "https://${aws_cloudfront_distribution.web_distribution.domain_name}"
 }
 
+output "cloudfront_distribution_id" {
+  description = "CloudFront distribution ID for cache invalidation"
+  value       = aws_cloudfront_distribution.web_distribution.id
+}
+
 output "ci_role_arn" {
   description = "IAM role for CI server (GitHub Action) to assume to deploy the app"
   value       = aws_iam_role.ci_role.arn
