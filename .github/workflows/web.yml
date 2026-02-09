@@ -86,7 +86,5 @@ jobs:
     - name: Sync build to S3
       run: |
         aws s3 sync ${{ env.BUILD_OUTPUT_PATH }} s3://${{ vars.AWS_S3_BUCKET }}/build \
-          --acl public-read \
-          --follow-symlinks \
           --delete \
           --region ${{ vars.AWS_REGION }}
