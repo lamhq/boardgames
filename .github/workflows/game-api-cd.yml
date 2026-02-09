@@ -18,11 +18,6 @@ on:
     paths:
       - 'apps/game-api/**'
 
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'apps/game-api/**'
-
 permissions:
   id-token: write  # Allows OIDC token requests
   contents: read   # Allows reading repo contents
