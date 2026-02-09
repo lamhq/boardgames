@@ -14,12 +14,12 @@ defaults:
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ main ]
     paths:
       - 'apps/web/**'
   
   pull_request:
-    branches: [ $default-branch ]
+    branches: [ main ]
     paths:
       - 'apps/web/**'
       - '.github/workflows/*'
