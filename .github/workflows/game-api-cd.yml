@@ -18,6 +18,11 @@ on:
     paths:
       - 'apps/game-api/**'
 
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/*'
+
 permissions:
   id-token: write  # Allows OIDC token requests
   contents: read   # Allows reading repo contents
@@ -57,7 +62,7 @@ jobs:
 
     - name: Create Lambda deployment package
       run: |
-        zip -r game-handler.zip ${{ env.BUILD_OUTPUT_PATH }}
+        cd ${{ env.BUILD_OUTPUT_PATH }} && zip -r ../../../game-handler.zip .
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v6
