@@ -22,7 +22,7 @@ on:
     branches: [ $default-branch ]
     paths:
       - 'apps/web/**'
-      - '.github/workflows/web.yml'
+      - '.github/workflows/*'
 
 jobs:
   build:
