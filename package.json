@@ -1,5 +1,7 @@
 {
+  "name": "boardgames",
   "private": true,
+  "packageManager": "pnpm@8.15.6",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -10,7 +12,5 @@
     "eslint": "^9.39.2",
     "prettier": "^3.8.1",
     "turbo": "^2.8.3"
-  },
-  "packageManager": "pnpm@8.15.6",
-  "name": "boardgames"
+  }
 }

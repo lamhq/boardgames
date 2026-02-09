@@ -15,3 +15,9 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "github_repo_id" {
+  description = "GitHub repository that contains project source code"
+  type        = string
+  default     = "github-username/repository-name"
+}

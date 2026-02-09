@@ -1,0 +1,82 @@
+name: Web CI
+
+# Required CI Variables (GitHub Settings > Actions > Variables):
+# - CI_ROLE_ARN: AWS IAM role ARN for OIDC authentication
+# - AWS_REGION: AWS region for deployment (e.g., us-east-1)
+# - AWS_S3_BUCKET: S3 bucket name for hosting the built assets
+
+env:
+  BUILD_OUTPUT_PATH: apps/web/dist/
+
+defaults:
+  run:
+    working-directory: .
+
+on:
+  push:
+    branches: ${{ github.event.repository.default_branch }}
+    paths:
+      - 'apps/web/**'
+  
+  pull_request:
+    branches: ${{ github.event.repository.default_branch }}
+    paths:
+      - 'apps/web/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9.15.1    
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install --filter web
+
+    - name: Build application
+      run: pnpm build --filter web
+
+    - name: Upload build artifacts 
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-output
+        path: ${{ env.BUILD_OUTPUT_PATH }}
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-output
+        path: ${{ env.BUILD_OUTPUT_PATH }}
+
+    - name: Configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: ${{ vars.CI_ROLE_ARN }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Sync build to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --follow-symlinks --delete
+      env:
+        AWS_S3_BUCKET: ${{ vars.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ vars.AWS_REGION }}
+        SOURCE_DIR: ${{ env.BUILD_OUTPUT_PATH }}
+        DEST_DIR: 'build'
