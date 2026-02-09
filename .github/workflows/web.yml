@@ -84,11 +84,9 @@ jobs:
         echo "AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}"
 
     - name: Sync build to S3
-      uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --acl public-read --follow-symlinks --delete
-      env:
-        AWS_S3_BUCKET: ${{ vars.AWS_S3_BUCKET }}
-        AWS_REGION: ${{ vars.AWS_REGION }}
-        SOURCE_DIR: ${{ env.BUILD_OUTPUT_PATH }}
-        DEST_DIR: 'build'
+      run: |
+        aws s3 sync ${{ env.BUILD_OUTPUT_PATH }} s3://${{ vars.AWS_S3_BUCKET }}/build \
+          --acl public-read \
+          --follow-symlinks \
+          --delete \
+          --region ${{ vars.AWS_REGION }}
