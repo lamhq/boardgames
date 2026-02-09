@@ -24,6 +24,10 @@ on:
       - 'apps/web/**'
       - '.github/workflows/*'
 
+permissions:
+  id-token: write  # Allows OIDC token requests
+  contents: read   # Allows reading repo contents
+
 jobs:
   build:
     runs-on: ubuntu-latest
