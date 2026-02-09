@@ -1,0 +1,79 @@
+name: Game API Deploy
+
+# Required CI Variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
+# - CI_ROLE_ARN: AWS IAM role ARN for OIDC authentication
+# - AWS_REGION: AWS region for deployment (e.g., us-east-1)
+# - GAME_HANDLER_LAMBDA: Lambda function name to deploy
+
+env:
+  BUILD_OUTPUT_PATH: apps/game-api/build/
+
+defaults:
+  run:
+    working-directory: .
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'apps/game-api/**'
+
+permissions:
+  id-token: write  # Allows OIDC token requests
+  contents: read   # Allows reading repo contents
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Setup Node environment
+      uses: ./.github/actions/setup-game-api
+
+    - name: Build game-api
+      working-directory: apps/game-api
+      run: pnpm build
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: game-api-build
+        path: ${{ env.BUILD_OUTPUT_PATH }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: game-api-build
+        path: ${{ env.BUILD_OUTPUT_PATH }}
+
+    - name: Create Lambda deployment package
+      run: |
+        cd ${{ env.BUILD_OUTPUT_PATH }} && zip -r ../../../game-handler.zip .
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: ${{ vars.CI_ROLE_ARN }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Deploy to Lambda
+      run: |
+        aws lambda update-function-code \
+          --function-name ${{ vars.GAME_HANDLER_LAMBDA }} \
+          --zip-file fileb://game-handler.zip \
+          --region ${{ vars.AWS_REGION }}
+
+    - name: Wait for Lambda update
+      run: |
+        aws lambda wait function-updated \
+          --function-name ${{ vars.GAME_HANDLER_LAMBDA }} \
+          --region ${{ vars.AWS_REGION }}
