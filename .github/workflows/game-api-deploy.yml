@@ -17,6 +17,11 @@ on:
     branches: [ main ]
     paths:
       - 'apps/game-api/**'
+
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'apps/game-api/**'
       - '.github/workflows/*'
 
 permissions:
