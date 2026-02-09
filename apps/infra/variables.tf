@@ -10,8 +10,8 @@ variable "project" {
   default     = "boardgames"
 }
 
-variable "environment" {
-  description = "Environment name"
+variable "github_repo_id" {
+  description = "Project GitHub repository"
   type        = string
-  default     = "dev"
+  default     = "github-username/repository-name"
 }

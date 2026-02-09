@@ -1,0 +1,62 @@
+name: Web PR Checks
+
+env:
+  BUILD_OUTPUT_PATH: apps/web/dist/
+
+defaults:
+  run:
+    working-directory: .
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'apps/web/**'
+
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'apps/web/**'
+
+permissions:
+  contents: read   # Allows reading repo contents
+
+jobs:
+  # Lint check
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Setup web environment
+      uses: ./.github/actions/setup-web
+
+    - name: Lint
+      run: pnpm --filter web lint
+
+  # Test check
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Setup web environment
+      uses: ./.github/actions/setup-web
+
+    - name: Test
+      run: pnpm --filter web test
+
+  # Build check
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+
+    - name: Setup web environment
+      uses: ./.github/actions/setup-web
+
+    - name: Build
+      run: pnpm --filter web build
