@@ -2,7 +2,7 @@ import type { APIGatewayProxyWebsocketHandlerV2 } from 'aws-lambda';
 
 export const handler: APIGatewayProxyWebsocketHandlerV2 = async (event) => {
   const { routeKey, connectionId } = event.requestContext ?? {};
-  console.error('connectionId:', connectionId);
+  console.log('connectionId:', connectionId);
   
   try {
     switch (routeKey) {
