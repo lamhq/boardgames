@@ -1,7 +1,7 @@
 {
   "name": "boardgames",
   "private": true,
-  "packageManager": "pnpm@8.15.6",
+  "packageManager": "pnpm@10.29.1",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
