@@ -14,12 +14,12 @@ defaults:
 
 on:
   push:
-    branches: ${{ github.event.repository.default_branch }}
+    branches: [ $default-branch ]
     paths:
       - 'apps/web/**'
   
   pull_request:
-    branches: ${{ github.event.repository.default_branch }}
+    branches: [ $default-branch ]
     paths:
       - 'apps/web/**'
 
