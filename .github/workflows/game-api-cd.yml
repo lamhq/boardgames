@@ -37,7 +37,7 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Setup Node environment
-      uses: ./.github/actions/setup-game-api
+      uses: ./.github/actions/setup-node-env
 
     - name: Build game-api
       working-directory: apps/game-api

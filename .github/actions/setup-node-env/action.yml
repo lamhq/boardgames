@@ -1,5 +1,5 @@
-name: 'Setup Web Environment'
-description: 'Sets up the environment for web app development and CI'
+name: 'Setup Node Environment'
+description: 'Sets up the Node.js environment with pnpm for the project'
 
 runs:
   using: 'composite'
@@ -16,5 +16,5 @@ runs:
         cache: 'pnpm'
 
     - name: Install dependencies
-      run: pnpm --filter web install
+      run: pnpm install
       shell: bash
