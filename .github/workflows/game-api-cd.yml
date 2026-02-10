@@ -22,6 +22,7 @@ on:
     branches: [ main ]
     paths:
       - 'apps/game-api/**'
+      - '.github/workflows/*'
 
 permissions:
   id-token: write  # Allows OIDC token requests
@@ -40,7 +41,7 @@ jobs:
 
     - name: Build game-api
       working-directory: apps/game-api
-      run: pnpm build
+      run: pnpm build --filter=game-api
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4

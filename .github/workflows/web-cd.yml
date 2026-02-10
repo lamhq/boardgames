@@ -35,7 +35,7 @@ jobs:
       uses: ./.github/actions/setup-web
 
     - name: Build application
-      run: pnpm --filter web build
+      run: pnpm build --filter=web
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
