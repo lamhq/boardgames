@@ -1,6 +1,5 @@
-import type { Game } from 'boardgame.io';
-import { Server, Origins } from 'boardgame.io/server';
-import { INVALID_MOVE } from 'boardgame.io/core';
+import type { Game } from '@repo/boardgame.io';
+import { INVALID_MOVE } from '@repo/boardgame.io/core';
 
 export interface MyGameState {
   cells: (string | null)[];
@@ -77,12 +76,3 @@ export const GameConfig: Game<MyGameState> = {
     },
   },
 };
-
-export function createGameServer(): ReturnType<typeof Server> {
-  const server = Server({
-    games: [GameConfig],
-    origins: [Origins.LOCALHOST_IN_DEVELOPMENT],
-  });
-
-  return server;
-}
