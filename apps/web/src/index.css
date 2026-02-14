@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #A78BFA;
+  --color-primary-dark: #8B5CF6;
+  --color-secondary: #9F7AEA;
+}
+
 @layer base {
   body {
     font-variant-ligatures: common-ligatures;

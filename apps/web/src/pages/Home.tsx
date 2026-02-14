@@ -18,6 +18,7 @@ export default function Home() {
         <h1 className="text-responsive-3xl md:text-5xl font-bold text-white mb-4 md:mb-6 text-center">
           Welcome to Board Games!
         </h1>
+
         <p className="text-responsive-lg md:text-responsive-xl text-white/90 mb-6 md:mb-8 text-center max-w-2xl">
           Play your favorite board games online with friends and family around the world. Click and play instantly!
         </p>
@@ -34,7 +35,7 @@ export default function Home() {
                 value={playerId}
                 onChange={(e) => setPlayerId(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handlePlay()}
-                className="w-full bg-white/10 backdrop-blur-sm border-2 border-white/30 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all duration-300"
+                className="w-full bg-white/10 backdrop-blur-sm border-2 border-white/30 rounded-lg px-4 py-3 focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all duration-300"
               />
             </div>
             
