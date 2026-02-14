@@ -1,52 +1,64 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import Layout from "../components/Layout";
 
+interface Game {
+  id: string;
+  name: string;
+  thumbnail: string;
+  description: string;
+}
+
+const GAMES: Game[] = [
+  {
+    id: "tic-tac-toe",
+    name: "Tic-Tac-Toe",
+    thumbnail: "🎯",
+    description: "Classic strategy game for two players",
+  },
+];
+
 export default function Home() {
-  const [playerId, setPlayerId] = useState("");
-  const navigate = useNavigate();
-
-  const handlePlay = () => {
-    if (playerId.trim()) {
-      navigate("/game", { state: { playerId } });
-    }
-  };
-
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-center py-12 md:py-20">
-        <h1 className="text-responsive-3xl md:text-5xl font-bold text-white mb-4 md:mb-6 text-center">
-          Welcome to Board Games!
-        </h1>
+      <div className="flex flex-col py-12 md:py-20">
+        <div className="mb-12 text-center">
+          <h1 className="text-3xl font-bold text-white mb-4 md:mb-6">
+            Welcome to Board Games!
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+            Play your favorite board games online with friends and family around the world.
+          </p>
+        </div>
 
-        <p className="text-responsive-lg md:text-responsive-xl text-white/90 mb-6 md:mb-8 text-center max-w-2xl">
-          Play your favorite board games online with friends and family around the world. Click and play instantly!
-        </p>
-        
-        <div className="bg-white/98 backdrop-blur-sm rounded-xl border-3 border-secondary shadow-xl p-6 md:p-8 mt-8 max-w-md w-full">
-          <div className="flex flex-col gap-6 items-center">
-            <div className="w-full">
-              <label className="block text-responsive-base md:text-responsive-lg font-semibold text-gray-800 mb-2">
-                Player Name
-              </label>
-              <input
-                type="text"
-                placeholder="Enter your name"
-                value={playerId}
-                onChange={(e) => setPlayerId(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handlePlay()}
-                className="w-full bg-white/10 backdrop-blur-sm border-2 border-white/30 rounded-lg px-4 py-3 focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all duration-300"
-              />
-            </div>
-            
-            <button
-              onClick={handlePlay}
-              disabled={!playerId.trim()}
-              className="w-full px-4 md:px-6 py-2 md:py-3 bg-secondary text-white rounded-lg md:rounded-xl border-3 border-secondary font-semibold text-responsive-sm md:text-responsive-base hover:bg-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95 disabled:bg-gray-500 disabled:border-gray-500 disabled:cursor-not-allowed disabled:opacity-60"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {GAMES.map((game) => (
+            <div
+              key={game.id}
+              className="bg-white/10 backdrop-blur-sm rounded-xl border-2 border-white/20 overflow-hidden hover:border-secondary hover:shadow-lg transition-all duration-300 flex flex-col"
             >
-              Play Now
-            </button>
-          </div>
+              <div className="bg-gradient-to-br from-secondary/80 to-primary/80 h-48 flex items-center justify-center text-8xl">
+                {game.thumbnail}
+              </div>
+
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h2 className="text-2xl md:text-2xl font-bold text-white mb-2">
+                    {game.name}
+                  </h2>
+                  <p className="text-base md:text-lg text-white/80 mb-4">
+                    {game.description}
+                  </p>
+                </div>
+
+                <Link
+                  to={`/game/${game.id}`}
+                  className="primary-btn"
+                >
+                  Play
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </Layout>
