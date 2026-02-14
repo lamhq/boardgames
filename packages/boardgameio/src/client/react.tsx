@@ -6,8 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useState, useEffect } from 'react';
 import { Client as RawClient } from './client';
 import type { ClientOpts, ClientState, _ClientImpl } from './client';
 
@@ -90,103 +89,98 @@ export function Client<
    * The main React component that wraps the passed in
    * board component and adds the API to its props.
    */
-  return class WrappedBoard extends React.Component<
-    WrappedBoardProps & AdditionalProps
-  > {
-    client: _ClientImpl<G>;
-    unsubscribe?: () => void;
+  const WrappedBoard: React.FC<WrappedBoardProps & AdditionalProps> = (props) => {
+    const {
+      matchID = 'default',
+      playerID = null,
+      credentials = null,
+      debug: debugProp = true,
+      ...rest
+    } = props;
 
-    static propTypes = {
-      // The ID of a game to connect to.
-      // Only relevant in multiplayer.
-      matchID: PropTypes.string,
-      // The ID of the player associated with this client.
-      // Only relevant in multiplayer.
-      playerID: PropTypes.string,
-      // This client's authentication credentials.
-      // Only relevant in multiplayer.
-      credentials: PropTypes.string,
-      // Enable / disable the Debug UI.
-      debug: PropTypes.any,
-    };
+    const clientRef = useRef<_ClientImpl<G> | null>(null);
+    const [, setUpdateTrigger] = useState<object>({});
 
-    static defaultProps = {
-      matchID: 'default',
-      playerID: null,
-      credentials: null,
-      debug: true,
-    };
+    // Determine effective debug value
+    const effectiveDebug = debug !== undefined ? debug : debugProp;
 
-    constructor(props: WrappedBoardProps & AdditionalProps) {
-      super(props);
-
-      if (debug === undefined) {
-        debug = props.debug;
-      }
-
-      this.client = RawClient({
+    // Initialize client once on mount
+    useEffect(() => {
+      clientRef.current = RawClient({
         game,
-        debug,
+        debug: effectiveDebug,
         numPlayers,
         multiplayer,
-        matchID: props.matchID,
-        playerID: props.playerID,
-        credentials: props.credentials,
+        matchID,
+        playerID,
+        credentials,
         enhancer,
       });
+
+      const unsubscribe = clientRef.current.subscribe(() =>
+        setUpdateTrigger({})
+      );
+
+      clientRef.current.start();
+
+      return () => {
+        clientRef.current?.stop();
+        unsubscribe();
+      };
+    }, []);
+
+    // Handle matchID changes
+    useEffect(() => {
+      clientRef.current?.updateMatchID(matchID);
+    }, [matchID]);
+
+    // Handle playerID changes
+    useEffect(() => {
+      clientRef.current?.updatePlayerID(playerID);
+    }, [playerID]);
+
+    // Handle credentials changes
+    useEffect(() => {
+      clientRef.current?.updateCredentials(credentials);
+    }, [credentials]);
+
+    const state = clientRef.current?.getState() ?? null;
+
+    if (state === null) {
+      const LoadingComponent = loading;
+      return <LoadingComponent />;
     }
 
-    componentDidMount() {
-      this.unsubscribe = this.client.subscribe(() => this.forceUpdate());
-      this.client.start();
+    if (!board || !clientRef.current) {
+      return <div className="bgio-client" />;
     }
 
-    componentWillUnmount() {
-      this.client.stop();
-      this.unsubscribe();
-    }
-
-    componentDidUpdate(prevProps: WrappedBoardProps & AdditionalProps) {
-      if (this.props.matchID != prevProps.matchID) {
-        this.client.updateMatchID(this.props.matchID);
-      }
-      if (this.props.playerID != prevProps.playerID) {
-        this.client.updatePlayerID(this.props.playerID);
-      }
-      if (this.props.credentials != prevProps.credentials) {
-        this.client.updateCredentials(this.props.credentials);
-      }
-    }
-
-    render() {
-      const state = this.client.getState();
-
-      if (state === null) {
-        return React.createElement(loading);
-      }
-
-      let _board = null;
-
-      if (board) {
-        _board = React.createElement(board, {
-          ...state,
-          ...(this.props as P),
-          isMultiplayer: !!multiplayer,
-          moves: this.client.moves,
-          events: this.client.events,
-          matchID: this.client.matchID,
-          playerID: this.client.playerID,
-          reset: this.client.reset,
-          undo: this.client.undo,
-          redo: this.client.redo,
-          log: this.client.log,
-          matchData: this.client.matchData,
-          sendChatMessage: this.client.sendChatMessage,
-          chatMessages: this.client.chatMessages,
-        });
-      }
-
-      return <div className="bgio-client">{_board}</div>;
-    }
+    const client = clientRef.current;
+    const BoardComponent = board;
+    
+    return (
+      <div className="bgio-client">
+        <BoardComponent
+          {...state}
+          {...(rest as P)}
+          isMultiplayer={!!multiplayer}
+          moves={client.moves}
+          events={client.events}
+          matchID={client.matchID}
+          playerID={client.playerID}
+          reset={client.reset}
+          undo={client.undo}
+          redo={client.redo}
+          log={client.log}
+          matchData={client.matchData}
+          sendChatMessage={client.sendChatMessage}
+          chatMessages={client.chatMessages}
+        />
+      </div>
+    );
   };
+
+  WrappedBoard.displayName = 'WrappedBoard';
+
+  return WrappedBoard;
 }

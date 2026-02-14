@@ -44,9 +44,11 @@ type SocketIOTransportOpts = TransportOpts &
  * Transport interface that interacts with the Master via socket.io.
  */
 export class SocketIOTransport extends Transport {
-  server: string;
-  socket: ioNamespace.Socket;
-  socketOpts: SocketOpts;
+  private server: string;
+
+  public socket: ioNamespace.Socket;
+
+  private socketOpts: SocketOpts;
 
   /**
    * Creates a new Multiplayer instance.
@@ -60,7 +62,7 @@ export class SocketIOTransport extends Transport {
    * @param {string} numPlayers - The number of players.
    * @param {string} server - The game server in the form of 'hostname:port'. Defaults to the server serving the client if not provided.
    */
-  constructor({ socket, socketOpts, server, ...opts }: SocketIOTransportOpts) {
+  public constructor({ socket, socketOpts, server, ...opts }: SocketIOTransportOpts) {
     super(opts);
 
     this.server = server;
@@ -68,26 +70,7 @@ export class SocketIOTransport extends Transport {
     this.socketOpts = socketOpts;
   }
 
-  sendAction(state: State, action: CredentialedActionShape.Any): void {
-    const args: Parameters<Master['onUpdate']> = [
-      action,
-      state._stateID,
-      this.matchID,
-      this.playerID,
-    ];
-    this.socket.emit('update', ...args);
-  }
-
-  sendChatMessage(matchID: string, chatMessage: ChatMessage): void {
-    const args: Parameters<Master['onChatMessage']> = [
-      matchID,
-      chatMessage,
-      this.credentials,
-    ];
-    this.socket.emit('chat', ...args);
-  }
-
-  connect(): void {
+  public connect(): void {
     if (!this.socket) {
       if (this.server) {
         let server = this.server;
@@ -166,13 +149,32 @@ export class SocketIOTransport extends Transport {
     });
   }
 
-  disconnect(): void {
+  public disconnect(): void {
     this.socket.close();
     this.socket = null;
     this.setConnectionStatus(false);
   }
 
-  requestSync(): void {
+  public sendAction(state: State, action: CredentialedActionShape.Any): void {
+    const args: Parameters<Master['onUpdate']> = [
+      action,
+      state._stateID,
+      this.matchID,
+      this.playerID,
+    ];
+    this.socket.emit('update', ...args);
+  }
+
+  public sendChatMessage(matchID: string, chatMessage: ChatMessage): void {
+    const args: Parameters<Master['onChatMessage']> = [
+      matchID,
+      chatMessage,
+      this.credentials,
+    ];
+    this.socket.emit('chat', ...args);
+  }
+
+  public requestSync(): void {
     if (this.socket) {
       const args: Parameters<Master['onSync']> = [
         this.matchID,
@@ -184,17 +186,17 @@ export class SocketIOTransport extends Transport {
     }
   }
 
-  updateMatchID(id: string): void {
+  public updateMatchID(id: string): void {
     this.matchID = id;
     this.requestSync();
   }
 
-  updatePlayerID(id: PlayerID): void {
+  public updatePlayerID(id: PlayerID): void {
     this.playerID = id;
     this.requestSync();
   }
 
-  updateCredentials(credentials?: string): void {
+  public updateCredentials(credentials?: string): void {
     this.credentials = credentials;
     this.requestSync();
   }

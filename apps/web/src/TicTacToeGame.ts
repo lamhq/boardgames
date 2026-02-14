@@ -1,5 +1,5 @@
-import type { Game } from 'boardgame.io';
-import { INVALID_MOVE } from 'boardgame.io/core';
+import type { Game } from '@repo/boardgame.io';
+import { INVALID_MOVE } from '@repo/boardgame.io/core';
 
 export interface MyGameState {
   cells: (string | null)[];
@@ -25,7 +25,7 @@ function IsDraw(cells: (string | null)[]): boolean {
   return cells.filter(c => c === null).length === 0;
 }
 
-export const GameConfig: Game<MyGameState> = {
+export const TicTacToeGame: Game<MyGameState> = {
   name: 'tictactoe',
 
   setup: () => ({ cells: Array(9).fill(null) }),

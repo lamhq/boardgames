@@ -8,10 +8,11 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.ts\"",
-    "test": "echo 'No tests specified yet'"
+    "test": "echo 'No tests specified yet'",
+    "debug": "pnpm run dev && ./scripts/start-chrome-debug.sh"
   },
   "dependencies": {
-    "boardgame.io": "^0.50.2",
+    "@repo/boardgame.io": "workspace:*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router": "^7.13.0"

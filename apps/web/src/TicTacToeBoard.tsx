@@ -1,11 +1,11 @@
-import type { BoardProps } from 'boardgame.io/react';
-import type { MyGameState } from './Game';
+import type { BoardProps } from '@repo/boardgame.io/react';
+import type { MyGameState } from './TicTacToeGame';
 
-interface MyGameProps extends BoardProps<MyGameState> {
+interface TicTacToeBoardProps extends BoardProps<MyGameState> {
   // Additional custom properties for your component
 }
 
-export function MyGameBoard({ ctx, G, moves }: MyGameProps) {
+export function TicTacToeBoard({ ctx, G, moves }: TicTacToeBoardProps) {
   const onClick = (id: number) => moves.clickCell(id);
 
   let winner;

@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@layer base {
+  body {
+    font-variant-ligatures: common-ligatures;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

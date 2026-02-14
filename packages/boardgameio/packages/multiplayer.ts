@@ -8,5 +8,6 @@
 
 import { Local } from '../src/client/transport/local';
 import { SocketIO } from '../src/client/transport/socketio';
+import { NativeWebSocket } from '../src/client/transport/websocket';
 
-export { Local, SocketIO };
+export { Local, SocketIO, NativeWebSocket };

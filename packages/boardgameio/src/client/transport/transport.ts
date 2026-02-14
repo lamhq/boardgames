@@ -32,19 +32,43 @@ export interface TransportOpts {
   numPlayers?: number;
 }
 
+/**
+ * Transport
+ *
+ * Abstract base class for transport implementations that handle communication
+ * between the client and the game server. Subclasses must implement the abstract
+ * methods to provide specific transport mechanisms (e.g., WebSocket, HTTP polling).
+ *
+ * The Transport class manages:
+ * - Connection state and lifecycle
+ * - Game configuration (game name, player ID, match ID, credentials)
+ * - Callbacks for receiving server data and connection status changes
+ */
 export abstract class Transport {
+  /** The name of the game being played. */
   protected gameName: string;
-  protected playerID: PlayerID | null;
-  protected matchID: string;
-  protected credentials?: string;
-  protected numPlayers: number;
-  /** Callback to pass transport data back to the client. */
-  private transportDataCallback: (data: TransportData) => void;
-  /** Callback to let the client know when the connection status has changed. */
-  private connectionStatusCallback: () => void = () => {};
-  isConnected = false;
 
-  constructor({
+  /** The ID of the player using this transport (null if not assigned). */
+  protected playerID: PlayerID | null;
+
+  /** The ID of the match/game session to connect to. */
+  protected matchID: string;
+
+  /** Optional authentication credentials for the player. */
+  protected credentials?: string;
+
+  /** The total number of players in the game. */
+  protected numPlayers: number;
+
+  /** Callback function invoked when the server sends data to the client. */
+  private transportDataCallback: (data: TransportData) => void;
+
+  /** Callback function invoked when the connection status changes (connected/disconnected). */
+  private connectionStatusCallback: () => void = () => {};
+
+  public isConnected = false;
+
+  public constructor({
     transportDataCallback,
     gameName,
     playerID,
@@ -60,36 +84,43 @@ export abstract class Transport {
     this.numPlayers = numPlayers || 2;
   }
 
-  /** Subscribe to connection state changes. */
-  subscribeToConnectionStatus(fn: () => void): void {
+  /** Register a callback to be notified of connection status changes. */
+  public subscribeToConnectionStatus(fn: () => void): void {
     this.connectionStatusCallback = fn;
   }
 
-  /** Transport implementations should call this when they connect/disconnect. */
+  /** Signal a connection status change and invoke the registered callback. */
   protected setConnectionStatus(isConnected: boolean): void {
     this.isConnected = isConnected;
     this.connectionStatusCallback();
   }
 
-  /** Transport implementations should call this when they receive data from a master. */
+  /** Notify the client of data received from the server. */
   protected notifyClient(data: TransportData): void {
     this.transportDataCallback(data);
   }
 
-  /** Called by the client to connect the transport. */
-  abstract connect(): void;
-  /** Called by the client to disconnect the transport. */
-  abstract disconnect(): void;
-  /** Called by the client to dispatch an action via the transport. */
-  abstract sendAction(state: State, action: CredentialedActionShape.Any): void;
-  /** Called by the client to dispatch a chat message via the transport. */
-  abstract sendChatMessage(matchID: string, chatMessage: ChatMessage): void;
-  /** Called by the client to request a sync action from the transport. */
-  abstract requestSync(): void;
-  /** Called by the client to update the matchID it wants to connect to. */
-  abstract updateMatchID(id: string): void;
-  /** Called by the client to update the playerID it is playing as. */
-  abstract updatePlayerID(id: PlayerID): void;
-  /** Called by the client to update the credentials it is using. */
-  abstract updateCredentials(credentials?: string): void;
+  /** Establish a connection to the game server. */
+  public abstract connect(): void;
+
+  /** Close the connection to the game server. */
+  public abstract disconnect(): void;
+
+  /** Send a game action to the server. */
+  public abstract sendAction(state: State, action: CredentialedActionShape.Any): void;
+
+  /** Send a chat message to other players via the server. */
+  public abstract sendChatMessage(matchID: string, chatMessage: ChatMessage): void;
+
+  /** Request a full game state synchronization from the server. */
+  public abstract requestSync(): void;
+
+  /** Change the match ID and resync the game state. */
+  public abstract updateMatchID(id: string): void;
+
+  /** Change the player ID and resync the game state. */
+  public abstract updatePlayerID(id: PlayerID): void;
+
+  /** Update authentication credentials and resync the game state. */
+  public abstract updateCredentials(credentials?: string): void;
 }

@@ -1,13 +1,53 @@
-import { Link } from "react-router";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import Layout from "../components/Layout";
 
 export default function Home() {
+  const [playerId, setPlayerId] = useState("");
+  const navigate = useNavigate();
+
+  const handlePlay = () => {
+    if (playerId.trim()) {
+      navigate("/game", { state: { playerId } });
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-500 to-purple-600">
-      <h1 className="text-5xl font-bold text-white mb-4">Welcome to Board Games</h1>
-      <p className="text-xl text-white mb-8">Play your favorite board games online with friends</p>
-      <Link to="/about" className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100">
-        Learn More
-      </Link>
-    </div>
+    <Layout>
+      <div className="flex flex-col items-center justify-center py-12 md:py-20">
+        <h1 className="text-responsive-3xl md:text-5xl font-bold text-white mb-4 md:mb-6 text-center">
+          Welcome to Board Games!
+        </h1>
+        <p className="text-responsive-lg md:text-responsive-xl text-white/90 mb-6 md:mb-8 text-center max-w-2xl">
+          Play your favorite board games online with friends and family around the world. Click and play instantly!
+        </p>
+        
+        <div className="bg-white/98 backdrop-blur-sm rounded-xl border-3 border-secondary shadow-xl p-6 md:p-8 mt-8 max-w-md w-full">
+          <div className="flex flex-col gap-6 items-center">
+            <div className="w-full">
+              <label className="block text-responsive-base md:text-responsive-lg font-semibold text-gray-800 mb-2">
+                Player Name
+              </label>
+              <input
+                type="text"
+                placeholder="Enter your name"
+                value={playerId}
+                onChange={(e) => setPlayerId(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handlePlay()}
+                className="w-full bg-white/10 backdrop-blur-sm border-2 border-white/30 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all duration-300"
+              />
+            </div>
+            
+            <button
+              onClick={handlePlay}
+              disabled={!playerId.trim()}
+              className="w-full px-4 md:px-6 py-2 md:py-3 bg-secondary text-white rounded-lg md:rounded-xl border-3 border-secondary font-semibold text-responsive-sm md:text-responsive-base hover:bg-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95 disabled:bg-gray-500 disabled:border-gray-500 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Play Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 }
