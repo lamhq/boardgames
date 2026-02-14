@@ -1,29 +1,22 @@
 import { useEffect } from "react";
-import { useParams, Link } from "react-router";
+import { useParams, Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-// import { Client } from "@repo/boardgame.io/react";
-// import { NativeWebSocket, SocketIO } from "@repo/boardgame.io/multiplayer";
-// import { TicTacToeGame } from "../TicTacToeGame";
-// import { TicTacToeBoard } from "../TicTacToeBoard";
 import Layout from "../components/Layout";
+import ErrorPage from "../components/ErrorPage";
 
-// const BoardGameClient = Client({
-//   game: TicTacToeGame,
-//   board: TicTacToeBoard,
-//   multiplayer: NativeWebSocket({
-//     server: "ws://localhost:8000",
-//   }),
-// });
-// const BoardGameClient = Client({
-//   game: GameConfig,
-//   board: MyGameBoard,
-//   multiplayer: SocketIO({
-//     server: "localhost:8000"
-//   }),
-// });
+const generatePlayerName = () => {
+  const adjectives = ["Swift", "Brave", "Clever", "Quick", "Smart", "Bold"];
+  const nouns = ["Panda", "Tiger", "Eagle", "Wolf", "Dragon", "Phoenix"];
+  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const noun = nouns[Math.floor(Math.random() * nouns.length)];
+  return `${adjective}${noun}`;
+};
 
 export default function Game() {
   const { gameId } = useParams();
+  const navigate = useNavigate();
+  const savedName = localStorage.getItem("playerName") || generatePlayerName();
+  
   const {
     register,
     watch,
@@ -32,10 +25,9 @@ export default function Game() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      playerName: localStorage.getItem("playerName") || "",
+      playerName: savedName,
     },
   });
-
   const playerName = watch("playerName");
 
   // Save player name to localStorage whenever it changes
@@ -45,11 +37,19 @@ export default function Game() {
     }
   }, [playerName]);
 
+  if (!gameId) {
+    return <ErrorPage message="Invalid game parameters" />;
+  }
+
   const onSubmit = (data: { playerName: string }) => {
-    console.log({
+    const matchId = 'm4';
+    const playerId = data.playerName;
+    const params = new URLSearchParams({
       gameId,
-      playerName: data.playerName,
+      matchId,
+      playerId,
     });
+    navigate(`/play?${params.toString()}`);
   };
 
   return (

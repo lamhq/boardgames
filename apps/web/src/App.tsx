@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
+import Play from "./pages/Play";
 
 const router = createBrowserRouter([
   {
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
   {
     path: "/game/:gameId",
     element: <Game />,
+  },
+  {
+    path: "/play",
+    element: <Play />,
   },
 ]);
 
