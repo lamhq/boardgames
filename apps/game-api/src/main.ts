@@ -1,5 +1,5 @@
 import { Server, Origins } from '@libs/boardgame.io/server';
-import { TicTacToeGame } from './games/tic-tac-toe';
+import { TicTacToeGame } from '@libs/games';
 
 const server = Server({
   games: [TicTacToeGame],

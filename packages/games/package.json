@@ -1,0 +1,11 @@
+{
+  "name": "@libs/games",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@libs/boardgame.io": "workspace:*",
+    "@libs/typescript-config": "workspace:*"
+  }
+}

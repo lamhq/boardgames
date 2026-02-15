@@ -1,0 +1,5 @@
+
+{
+  "extends": "@libs/typescript-config/lib.json",
+  "include": ["src"]
+}

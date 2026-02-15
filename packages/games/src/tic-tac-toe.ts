@@ -1,7 +1,7 @@
 import type { Game } from '@libs/boardgame.io';
 import { INVALID_MOVE } from '@libs/boardgame.io/core';
 
-export interface GameState {
+export interface TicTacToeGameState {
   cells: Array<string | null>;
 }
 
@@ -31,7 +31,7 @@ function IsDraw(cells: Array<string | null>): boolean {
   return cells.filter((c) => c === null).length === 0;
 }
 
-export const TicTacToeGame: Game<GameState> = {
+export const TicTacToeGame: Game<TicTacToeGameState> = {
   name: 'tictactoe',
 
   setup: () => {
@@ -66,7 +66,7 @@ export const TicTacToeGame: Game<GameState> = {
   },
 
   ai: {
-    enumerate: (G: GameState) => {
+    enumerate: (G: TicTacToeGameState) => {
       const moves = [];
       for (let i = 0; i < 9; i++) {
         if (G.cells[i] === null) {

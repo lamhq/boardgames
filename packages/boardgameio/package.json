@@ -9,7 +9,6 @@
     "./core": "./packages/core.ts",
     "./debug": "./packages/debug.ts",
     "./react": "./packages/react.ts",
-    "./react-native": "./packages/react-native.ts",
     "./server": "./packages/server.ts",
     "./ai": "./packages/ai.ts",
     "./plugins": "./packages/plugins.ts",

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router";
 import { createPortal } from "react-dom";
 import type { BoardProps } from '@libs/boardgame.io/react';
-import type { GameState } from '../games/tic-tac-toe';
+import type { TicTacToeGameState } from '@libs/games';
 
-interface TicTacToeBoardProps extends BoardProps<GameState> {
+interface TicTacToeBoardProps extends BoardProps<TicTacToeGameState> {
   // Additional custom properties for your component
 }
 
