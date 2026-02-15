@@ -9,35 +9,68 @@ It makes the gaming experience straightforward without requiring setup or purcha
 Currently it runs on web browsers (mobile and PC).
 
 
-## Data model
+## Core Concepts
 
-- There are many **games** (tic-tac-toe, blackjack, ...)
-- **Players** play a game by joining **matches** of that game
-- Each player has a unique **player ID** (unique per match); players with no ID are **spectators**
-- Each match in a game has a **match ID** (unique within the game)
+- **User**: a person who accesses the platform, with a registered account or as a guest.
+- **Game**: type of boardgame the system supports (tic-tac-toe, blackjack, etc.).
+- **Lobby**: an area for users to join before starting a match.
+- **Match**: the actual gameplay session, uniquely identified by `match_id`.
+- **Player**: a user who joins a lobby and is assigned a `player_id` when a match starts.
+- **Spectator**: a user who joins to watch but does not get a `player_id`.
 
 
 ## Key Features
 
+### Browsing games
+
+- The first screen when user access the platform is the game list screen, users can browse available games and select what to play.
+
+
+### Creating lobbies
+
+When select a game to play:
+- If user is not logged in yet, user may be prompted to log in or continue without an account.
+- A lobby for that game is created 
+- User become the owner (**host**) of the lobby
+- User is navigated to the game lobby screen
+
+In the game lobby, the user can:
+- Enter their name
+- Invite other players to play together by sharing an invitation link
+- Change game settings (host only, before match starts)
+- Start the match when ready (host only)
+
+
 ### Inviting players
 
-- All players can invite others to play together by getting an invitation link.
-- The invitation link is the same regardless of who shares it.
-- The first player that generates the invitation link is the host.
-- When a match is finished, players can choose to start the next match without inviting again. The previous invitation link still works.
-- When there are no players playing, clicking the invitation link will display "The game was ended."
+- Players in a game lobby can invite others to play together by sharing an invitation link.
+- Each lobby has a unique invitation link.
+- When there are no players in a lobby, clicking the invitation link will display "The game was ended."
+- Users do not need to register or log in to join. They can simply click the link and enter their name to join the lobby as a player or spectator.
 
 
-### Joining a game
+### Joining lobbies
 
-- When a match is in-progress, other players cannot join to play. They can join as spectators.
-- If joined as a player (not a spectator), the player will be assigned a player ID (unique per match).
+- When joining a lobby, if user is not logged in yet, user may be prompted to log in or continue without an account.
+- After joining a lobby, users can see the game lobby screen with the list of players, game settings, and the lobby status (waiting, in-progress).
+- If a match is in-progress, users can only choose to join as spectators. They can see the game but cannot play.
 
 
 ### Playing
 
-- Game settings can be changed in each match, before it starts.
-- Players must wait for the host to start the match.
-- Only the host can change the game settings and kick other players.
-- When a match is finished, to start the next match, a new match ID must be generated.
-- For a game, there can be many matches happening at the same time
+- Only the host can start the match. Other players must wait for the host to start the match.
+- When starting a match, a new match is created in the system with status in-progress.
+- For a lobby, there can be one active match at a time.
+- When a match is finished, players are returned to the lobby, and the match status is updated to finished.
+
+
+### Creating accounts
+
+A temporary guest account is created for users who choose to continue without logging in.
+
+For users who choose to log in, they can create a permanent account with:
+- phone number (use OTP for verification and login)
+- email and password
+- third-party authentication (Google, Facebook, etc.)
+
+In both cases, users is navigated to the lobby screen after registration/authentication.
