@@ -12,7 +12,7 @@
     "debug": "pnpm run dev && ./scripts/start-chrome-debug.sh"
   },
   "dependencies": {
-    "@repo/boardgame.io": "workspace:*",
+    "@libs/boardgame.io": "workspace:*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hook-form": "^7.71.1",
@@ -20,8 +20,8 @@
     "react-router": "^7.13.0"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "@libs/eslint-config": "workspace:*",
+    "@libs/typescript-config": "workspace:*",
     "@tailwindcss/vite": "^4.0.0",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",

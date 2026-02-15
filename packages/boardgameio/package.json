@@ -1,5 +1,5 @@
 {
-  "name": "@repo/boardgame.io",
+  "name": "@libs/boardgame.io",
   "version": "0.50.2",
   "description": "library for turn-based games",
   "exports": {

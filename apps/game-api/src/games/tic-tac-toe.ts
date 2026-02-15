@@ -1,5 +1,5 @@
-import type { Game } from '@repo/boardgame.io';
-import { INVALID_MOVE } from '@repo/boardgame.io/core';
+import type { Game } from '@libs/boardgame.io';
+import { INVALID_MOVE } from '@libs/boardgame.io/core';
 
 export interface GameState {
   cells: Array<string | null>;
