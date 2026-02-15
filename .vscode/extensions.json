@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "hashicorp.terraform",
+        "ms-playwright.playwright",
+        "dbaeumer.vscode-eslint"
+    ]
+}
