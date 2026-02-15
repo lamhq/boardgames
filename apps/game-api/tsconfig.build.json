@@ -1,16 +1,10 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "skipLibCheck": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "strict": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitThis": false
   },
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }
