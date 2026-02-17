@@ -33,7 +33,7 @@ jobs:
       uses: ./.github/actions/setup-node-env
 
     - name: Lint
-      run: pnpm --filter web lint
+      run: pnpm lint -F web 
 
   # Unit Test
   unit-test:
@@ -46,7 +46,7 @@ jobs:
       uses: ./.github/actions/setup-node-env
 
     - name: Unit Test
-      run: pnpm --filter web test
+      run: pnpm test -F web 
 
   e2e-test:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
       uses: ./.github/actions/setup-node-env
 
     - name: E2E Test
-      run: pnpm --filter web-e2e test
+      run: pnpm test -F web-e2e 
     
     - name: Upload test report
       uses: actions/upload-artifact@v4
@@ -79,4 +79,4 @@ jobs:
       uses: ./.github/actions/setup-node-env
 
     - name: Build
-      run: pnpm --filter web build
+      run: pnpm build -F web
