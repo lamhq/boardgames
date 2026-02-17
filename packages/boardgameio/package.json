@@ -11,6 +11,10 @@
     "type-check": "tsc --noEmit"
   },
   "exports": {
+    ".": {
+      "import": "./dist/types.js",
+      "types": "./dist/types.d.ts"
+    },
     "./aws": {
       "import": "./dist/aws/index.js",
       "types": "./dist/aws/index.d.ts"
