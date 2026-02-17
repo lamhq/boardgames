@@ -1,15 +1,28 @@
-.cache
-yarn.lock
-.DS_Store
-*.swp
-npm-debug.log*
+# Build output
 dist
-node_modules
+*.tsbuildinfo
+
+# Test coverage
 coverage
 .coveralls.yml
-.npm
-npm
-.idea/
-.vscode/*
+
+# Dependencies
+yarn.lock
+node_modules
+
+# IDE and editor cache
+.cache
 .rpt2_cache/
 .rush/
+.idea/
+
+# Node debugging
+npm-debug.log*
+.npm
+npm
+
+# OS
+.DS_Store
+
+# Editor
+*.swp
