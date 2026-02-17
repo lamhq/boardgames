@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "jsx": "react-jsx",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
     "esModuleInterop": true,
     "isolatedModules": false,
     "sourceMap": true,
-    "types": ["jest", "node", "@testing-library/jest-dom"],
-    "resolvePackageJsonExports": true,
     "declaration": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "incremental": true,
+    "jsx": "react-jsx",
+    "types": ["jest", "node", "@testing-library/jest-dom"],
     "alwaysStrict": false,
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
@@ -29,5 +29,6 @@
     "strictNullChecks": false,
     "strictPropertyInitialization": false
   },
-  "exclude": ["node_modules"]
+  "include": ["src"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
 }

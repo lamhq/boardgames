@@ -1,9 +1,0 @@
-{
-  "extends": "@libs/typescript-config/base.json",
-  "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "outDir": "./dist"
-  },
-  "include": ["src"]
-}

@@ -1,9 +1,7 @@
 {
   "name": "@libs/boardgame.io",
   "scripts": {
-    "build:react": "tsc -p tsconfig.react.json",
-    "build:node": "tsc -p tsconfig.node.json",
-    "build": "tsc --noEmit && pnpm run build:node && pnpm run build:react",
+    "build": "tsc",
     "test": "jest"
   },
   "exports": {
@@ -106,6 +104,8 @@
     "@types/jest": "^30.0.0",
     "@types/koa__cors": "^3.0.3",
     "@types/node": "^22.10.7",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
     "@types/supertest": "^6.0.2",

@@ -1,6 +1,6 @@
 import type { APIGatewayProxyWebsocketHandlerV2 } from 'aws-lambda';
 import { createGameHandler } from '@libs/boardgame.io/aws';
-import { TicTacToeGame } from '@libs/games';
+import { TicTacToeGame } from './tic-tac-toe';
 
 /**
  * Export the configured handler for AWS Lambda

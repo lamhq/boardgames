@@ -1,7 +1,6 @@
 {
   "name": "game-api",
-  "version": "0.0.1",
-  "description": "",
+  "type": "commonjs",
   "scripts": {
     "build": "node esbuild.mjs",
     "dev": "nest start --watch",

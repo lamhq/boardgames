@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router";
 import { Client } from "@libs/boardgame.io/react";
 import { SocketIO } from "@libs/boardgame.io/multiplayer";
-import { TicTacToeGame } from "@libs/games";
+import { TicTacToeGame } from "../tic-tac-toe";
 import { TicTacToeBoard } from "../components/TicTacToeBoard";
 import Layout from "../components/Layout";
 import ErrorPage from "../components/ErrorPage";
