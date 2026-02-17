@@ -1,24 +1,20 @@
-// import Debug from './debug/Debug.svelte';
 import type { _ClientImpl } from './client';
 
 type SubscriptionState = {
   client: _ClientImpl;
-  debuggableClients: _ClientImpl[];
 };
 type SubscribeCallback = (arg: SubscriptionState) => void;
 type UnsubscribeCallback = () => void;
 
 /**
- * Class to manage boardgame.io clients and limit debug panel rendering.
+ * Class to manage boardgame.io clients.
  */
 export class ClientManager {
-  private debugPanel: any | null; // Temporarily commented out Svelte Debug type
   private currentClient: _ClientImpl | null;
   private clients: Map<_ClientImpl, _ClientImpl>;
   private subscribers: Map<symbol, SubscribeCallback>;
 
   constructor() {
-    // this.debugPanel = null;
     this.currentClient = null;
     this.clients = new Map();
     this.subscribers = new Map();
@@ -30,8 +26,6 @@ export class ClientManager {
   register(client: _ClientImpl): void {
     // Add client to clients map.
     this.clients.set(client, client);
-    // Mount debug for this client (no-op if another debug is already mounted).
-    // this.mountDebug(client);
     this.notifySubscribers();
   }
 
@@ -41,17 +35,6 @@ export class ClientManager {
   unregister(client: _ClientImpl): void {
     // Remove client from clients map.
     this.clients.delete(client);
-
-    // if (this.currentClient === client) {
-    //   // If the removed client owned the debug panel, unmount it.
-    //   this.unmountDebug();
-    //   // Mount debug panel for next available client.
-    //   for (const [client] of this.clients) {
-    //     if (this.debugPanel) break;
-    //     this.mountDebug(client);
-    //   }
-    // }
-
     this.notifySubscribers();
   }
 
@@ -80,7 +63,6 @@ export class ClientManager {
       for (const [client] of this.clients) {
         if (
           client.playerID === playerID &&
-          client.debugOpt !== false &&
           client.multiplayer === this.currentClient.multiplayer
         ) {
           this.switchToClient(client);
@@ -95,12 +77,11 @@ export class ClientManager {
   }
 
   /**
-   * Set the passed client as the active client for debugging.
+   * Set the passed client as the active client.
    */
   switchToClient(client: _ClientImpl): void {
     if (client === this.currentClient) return;
-    // this.unmountDebug();
-    // this.mountDebug(client);
+    this.currentClient = client;
     this.notifySubscribers();
   }
 
@@ -120,58 +101,6 @@ export class ClientManager {
   private getState(): SubscriptionState {
     return {
       client: this.currentClient,
-      debuggableClients: this.getDebuggableClients(),
     };
   }
-
-  /**
-   * Get an array of the registered clients that haven’t disabled the debug panel.
-   */
-  private getDebuggableClients(): _ClientImpl[] {
-    return [...this.clients.values()].filter(
-      (client) => client.debugOpt !== false
-    );
-  }
-
-  /**
-   * Mount the debug panel using the passed client.
-   */
-  // private mountDebug(client: _ClientImpl): void {
-  //   if (
-  //     client.debugOpt === false ||
-  //     this.debugPanel !== null ||
-  //     typeof document === 'undefined'
-  //   ) {
-  //     return;
-  //   }
-  //
-  //   let DebugImpl: typeof Debug | undefined;
-  //   let target = document.body;
-  //
-  //   if (process.env.NODE_ENV !== 'production') {
-  //     DebugImpl = Debug;
-  //   }
-  //
-  //   if (client.debugOpt && client.debugOpt !== true) {
-  //     DebugImpl = client.debugOpt.impl || DebugImpl;
-  //     target = client.debugOpt.target || target;
-  //   }
-  //
-  //   if (DebugImpl) {
-  //     this.currentClient = client;
-  //     this.debugPanel = new DebugImpl({
-  //       target,
-  //       props: { clientManager: this },
-  //     });
-  //   }
-  // }
-
-  /**
-   * Unmount the debug panel.
-   */
-  // private unmountDebug(): void {
-  //   this.debugPanel.$destroy();
-  //   this.debugPanel = null;
-  //   this.currentClient = null;
-  // }
 }

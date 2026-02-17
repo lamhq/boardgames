@@ -2,9 +2,7 @@
   "name": "game-api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "type": "module",
   "scripts": {
     "build": "node esbuild.mjs",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

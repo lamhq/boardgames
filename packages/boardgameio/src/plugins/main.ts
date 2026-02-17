@@ -22,7 +22,7 @@ import type {
   PlayerID,
 } from '../types';
 import { error } from '../core/logger';
-import type { GameMethod } from '../core/game-methods';
+import type { GameMethod } from '../core';
 
 interface PluginOpts {
   game: Game;

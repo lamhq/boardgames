@@ -6,16 +6,15 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { InitializeGame } from '../core/initialize';
-import { Client } from '../client/client';
+import { InitializeGame } from '../core';
+import { Client } from '../client';
 import { MAKE_MOVE, GAME_EVENT } from '../core/action-types';
 import { makeMove } from '../core/action-creators';
 import { Step, Simulate } from './ai';
 import { RandomBot } from './random-bot';
 import { MCTSBot } from './mcts-bot';
 import type { Node } from './mcts-bot';
-import { ProcessGameConfig } from '../core/game';
-import { Stage } from '../core/turn-order';
+import { ProcessGameConfig, Stage } from '../core';
 import type { AnyFn, Game, Ctx } from '../types';
 
 function IsVictory(cells) {

@@ -11,12 +11,12 @@ import IO from 'koa-socket-2';
 import type IOTypes from 'socket.io';
 import type { ServerOptions as HttpsOptions } from 'https';
 import PQueue from 'p-queue';
-import { Master } from '../../master/master';
+import { Master } from '../../master';
 import type {
   TransportAPI as MasterTransport,
   TransportData,
 } from '../../master/master';
-import { getFilterPlayerView } from '../../master/filter-player-view';
+import { getFilterPlayerView } from '../../master';
 import type { Game, Server } from '../../types';
 import type { GenericPubSub } from './pubsub/generic-pub-sub';
 import type { IntermediateTransportData } from '../../master/master';

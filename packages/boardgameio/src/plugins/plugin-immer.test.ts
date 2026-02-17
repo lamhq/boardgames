@@ -6,9 +6,9 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '../client/client';
+import { Client } from '../client';
 import type { _ClientImpl } from '../client/client';
-import { INVALID_MOVE } from '../core/constants';
+import { INVALID_MOVE } from '../core';
 
 // Surpress invalid move error logging
 jest.mock('../core/logger');

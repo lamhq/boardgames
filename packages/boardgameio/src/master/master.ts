@@ -6,11 +6,10 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import {
-  CreateGameReducer,
-  TransientHandlingMiddleware,
-} from '../core/reducer';
-import { ProcessGameConfig, IsLongFormMove } from '../core/game';
+import { CreateGameReducer } from '../core';
+import { TransientHandlingMiddleware } from '../core/reducer';
+import { ProcessGameConfig } from '../core';
+import { IsLongFormMove } from '../core/game';
 import { UNDO, REDO, MAKE_MOVE } from '../core/action-types';
 import { createStore, applyMiddleware } from 'redux';
 import * as logging from '../core/logger';

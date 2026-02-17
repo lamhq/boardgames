@@ -7,7 +7,7 @@
  */
 
 import { Events } from './events';
-import { Client } from '../../client/client';
+import { Client } from '../../client';
 import { error } from '../../core/logger';
 import type { Game, Ctx } from '../../types';
 

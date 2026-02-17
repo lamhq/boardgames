@@ -8,7 +8,7 @@
 
 import PluginPlayer from './plugin-player';
 import type { PlayerAPI } from './plugin-player';
-import { Client } from '../client/client';
+import { Client } from '../client';
 import type { Game } from '../types';
 
 describe('default values', () => {

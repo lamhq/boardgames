@@ -6,6 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-// import Debug from '../src/client/debug/Debug.svelte';
-
-// export { Debug };
+export { Local } from './local';
+export { SocketIO } from './socketio';
+export { NativeWebSocket } from './websocket';
+export type { Transport, TransportOpts } from './transport';

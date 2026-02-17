@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import type { ProcessGameConfig } from '../../core/game';
+import type { ProcessGameConfig } from '../../core';
 import type { TransportData } from '../../master/master';
 import type {
   Game,

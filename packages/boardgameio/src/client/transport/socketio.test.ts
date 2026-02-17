@@ -9,9 +9,9 @@
 import { SocketIOTransport } from './socketio';
 import type * as ioNamespace from 'socket.io-client';
 import { makeMove } from '../../core/action-creators';
-import type { Master } from '../../master/master';
+import type { Master } from '../../master';
 import type { ChatMessage, State } from '../../types';
-import { ProcessGameConfig } from '../../core/game';
+import { ProcessGameConfig } from '../../core';
 
 jest.mock('../../core/logger', () => ({
   info: jest.fn(),
@@ -84,21 +84,21 @@ describe('update matchID / playerID / credentials', () => {
     m.updateMatchID('test');
     expect(m.getMatchID()).toBe('test');
     const args: SyncArgs = ['test', null, undefined, 2];
-    expect(socket.emit).lastCalledWith('sync', ...args);
+    expect(socket.emit).toHaveBeenLastCalledWith('sync', ...args);
   });
 
   test('playerID', () => {
     m.updatePlayerID('player');
     expect(m.getPlayerID()).toBe('player');
     const args: SyncArgs = ['test', 'player', undefined, 2];
-    expect(socket.emit).lastCalledWith('sync', ...args);
+    expect(socket.emit).toHaveBeenLastCalledWith('sync', ...args);
   });
 
   test('credentials', () => {
     m.updateCredentials('1234');
     expect(m.getCredentials()).toBe('1234');
     const args: SyncArgs = ['test', 'player', '1234', 2];
-    expect(socket.emit).lastCalledWith('sync', ...args);
+    expect(socket.emit).toHaveBeenLastCalledWith('sync', ...args);
   });
 });
 
@@ -200,7 +200,7 @@ describe('multiplayer', () => {
     const state = { _stateID: 0 } as State;
     transport.sendAction(state, action);
     const args: UpdateArgs = [action, state._stateID, 'default', null];
-    expect(mockSocket.emit).lastCalledWith('update', ...args);
+    expect(mockSocket.emit).toHaveBeenLastCalledWith('update', ...args);
   });
 
   test('receive chat-message', () => {
@@ -219,7 +219,7 @@ describe('multiplayer', () => {
       payload: { message: 'foo' },
     };
     transport.sendChatMessage('matchID', message);
-    expect(mockSocket.emit).lastCalledWith(
+    expect(mockSocket.emit).toHaveBeenLastCalledWith(
       'chat',
       'matchID',
       message,
@@ -273,6 +273,7 @@ describe('server option', () => {
     expect(m.socket.io.engine.hostname).toEqual(hostname);
     expect(m.socket.io.engine.port).toEqual(port);
     expect(m.socket.io.engine.secure).toEqual(false);
+    m.disconnect();
   });
 
   test('without trailing slash', () => {
@@ -285,6 +286,7 @@ describe('server option', () => {
     });
     m.connect();
     expect((m.socket.io as any).uri).toEqual(server + '/default');
+    m.disconnect();
   });
 
   test('https', () => {
@@ -299,6 +301,7 @@ describe('server option', () => {
     expect(m.socket.io.engine.hostname).toEqual(hostname);
     expect(m.socket.io.engine.port).toEqual(port);
     expect(m.socket.io.engine.secure).toEqual(true);
+    m.disconnect();
   });
 
   test('http', () => {
@@ -313,6 +316,7 @@ describe('server option', () => {
     expect(m.socket.io.engine.hostname).toEqual(hostname);
     expect(m.socket.io.engine.port).toEqual(port);
     expect(m.socket.io.engine.secure).toEqual(false);
+    m.disconnect();
   });
 
   test('no server set', () => {
@@ -324,5 +328,6 @@ describe('server option', () => {
     m.connect();
     expect(m.socket.io.engine.hostname).not.toEqual(hostname);
     expect(m.socket.io.engine.port).not.toEqual(port);
+    m.disconnect();
   });
 });

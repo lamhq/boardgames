@@ -6,12 +6,9 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { INVALID_MOVE } from '../core/constants';
+import { INVALID_MOVE, CreateGameReducer, InitializeGame, ProcessGameConfig } from '../core';
 import { createStore } from 'redux';
-import { CreateGameReducer } from '../core/reducer';
-import { InitializeGame } from '../core/initialize';
 import { Client, createMoveDispatchers } from './client';
-import { ProcessGameConfig } from '../core/game';
 import { Transport } from './transport/transport';
 import { LocalTransport, Local } from './transport/local';
 import { SocketIOTransport, SocketIO } from './transport/socketio';
@@ -23,7 +20,7 @@ import {
   patch,
 } from '../core/action-creators';
 import * as Actions from '../core/action-types';
-import Debug from './debug/Debug.svelte';
+
 import { error } from '../core/logger';
 import type { Game, LogEntry, State, SyncInfo } from '../types';
 import type { Operation } from 'rfc6902';
@@ -337,7 +334,6 @@ describe('receiveTransportData', () => {
     client = Client({
       game: {},
       matchID: 'A',
-      debug: false,
       // Use the multiplayer interface to extract the client callback
       // and use it to send updates to the client directly.
       multiplayer: ({ transportDataCallback }) => {
@@ -797,7 +793,7 @@ describe('subscribe', () => {
   });
 
   test('called at the beginning', () => {
-    expect(fn).toBeCalledWith(
+    expect(fn).toHaveBeenCalledWith(
       expect.objectContaining({
         G: {},
         ctx: expect.objectContaining({ turn: 1 }),
@@ -808,7 +804,7 @@ describe('subscribe', () => {
   test('called after a move', () => {
     fn.mockClear();
     client.moves.A();
-    expect(fn).toBeCalledWith(
+    expect(fn).toHaveBeenCalledWith(
       expect.objectContaining({
         G: { moved: true },
       })
@@ -818,7 +814,7 @@ describe('subscribe', () => {
   test('called after an event', () => {
     fn.mockClear();
     client.events.endTurn();
-    expect(fn).toBeCalledWith(
+    expect(fn).toHaveBeenCalledWith(
       expect.objectContaining({
         ctx: expect.objectContaining({ turn: 2 }),
       })
@@ -832,8 +828,8 @@ describe('subscribe', () => {
     const unsubscribe = client.subscribe(fn2);
 
     // The subscriber that just subscribed is notified.
-    expect(fn).not.toBeCalled();
-    expect(fn2).toBeCalledWith(
+    expect(fn).not.toHaveBeenCalled();
+    expect(fn2).toHaveBeenCalledWith(
       expect.objectContaining({
         G: { moved: true },
       })
@@ -845,12 +841,12 @@ describe('subscribe', () => {
     client.moves.A();
 
     // Both subscribers are notified.
-    expect(fn).toBeCalledWith(
+    expect(fn).toHaveBeenCalledWith(
       expect.objectContaining({
         G: { moved: true },
       })
     );
-    expect(fn2).toBeCalledWith(
+    expect(fn2).toHaveBeenCalledWith(
       expect.objectContaining({
         G: { moved: true },
       })
@@ -863,12 +859,12 @@ describe('subscribe', () => {
 
     // The subscriber the unsubscribed is not notified.
     client.moves.A();
-    expect(fn).toBeCalledWith(
+    expect(fn).toHaveBeenCalledWith(
       expect.objectContaining({
         G: { moved: true },
       })
     );
-    expect(fn2).not.toBeCalled();
+    expect(fn2).not.toHaveBeenCalled();
   });
 
   test('transport notifies subscribers', () => {
@@ -895,9 +891,9 @@ describe('subscribe', () => {
         multiplayer: Local(),
       });
       client.subscribe(fn);
-      expect(fn).not.toBeCalled();
+      expect(fn).not.toHaveBeenCalled();
       client.start();
-      expect(fn).toBeCalled();
+      expect(fn).toHaveBeenCalled();
       client.stop();
     });
 
@@ -909,7 +905,7 @@ describe('subscribe', () => {
       });
       client.start();
       client.subscribe(fn);
-      expect(fn).toBeCalled();
+      expect(fn).toHaveBeenCalled();
       client.stop();
     });
   });
@@ -937,40 +933,6 @@ describe('start / stop', () => {
   beforeEach(() => {
     // Don't let other calls to `error` pollute this state.
     jest.resetAllMocks();
-  });
-
-  test('mount on custom element', () => {
-    const el = document.createElement('div');
-    const client = Client({ game: {}, debug: { target: el } });
-    expect(() => {
-      client.start();
-      client.stop();
-    }).not.toThrow();
-    expect(error).not.toHaveBeenCalled();
-  });
-
-  test('no error when mounting on null element', () => {
-    const client = Client({ game: {}, debug: { target: null } }) as any;
-    expect(() => {
-      client.start();
-      client.stop();
-    }).not.toThrow();
-
-    client.start();
-    client.stop();
-    expect(client.manager.debugPanel).toBe(null);
-  });
-
-  test('override debug implementation', () => {
-    const client = Client({ game: {}, debug: { impl: Debug } });
-    expect(() => {
-      client.start();
-      client.stop();
-    }).not.toThrow();
-
-    client.start();
-    client.stop();
-    expect(error).not.toHaveBeenCalled();
   });
 
   test('production mode', () => {

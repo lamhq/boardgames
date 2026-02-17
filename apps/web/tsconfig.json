@@ -1,7 +1,4 @@
 {
   "extends": "@libs/typescript-config/vite.json",
-  "include": ["src"],
-  "compilerOptions": {
-    "jsx": "react-jsx"
-  }
+  "include": ["src"]
 }

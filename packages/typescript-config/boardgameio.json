@@ -1,12 +1,6 @@
 {
   "extends": "./base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "declaration": false,
-    "strict": false,
-    "jsx": "react",
-    "plugins": [{ "transform": "ts-transformer-imports" }]
+    "jsx": "react"
   }
 }

@@ -6,7 +6,5 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '../src/client/client';
-import { LobbyClient, LobbyClientError } from '../src/lobby/client';
-
-export { Client, LobbyClient, LobbyClientError };
+export { Client, type BoardProps } from '../client/react';
+export { default as Lobby } from '../lobby/react';

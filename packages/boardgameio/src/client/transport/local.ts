@@ -6,9 +6,9 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { InMemory } from '../../server/db/inmemory';
+import { InMemory } from '../../server';
 import { LocalStorage } from '../../server/db/localstorage';
-import { Master } from '../../master/master';
+import { Master } from '../../master';
 import type { TransportAPI, TransportData } from '../../master/master';
 import { Transport } from './transport';
 import type { TransportOpts } from './transport';
@@ -19,7 +19,7 @@ import type {
   PlayerID,
   State,
 } from '../../types';
-import { getFilterPlayerView } from '../../master/filter-player-view';
+import { getFilterPlayerView } from '../../master';
 
 /**
  * Returns null if it is not a bot's turn.

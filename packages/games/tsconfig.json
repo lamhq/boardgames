@@ -1,5 +1,4 @@
-
 {
-  "extends": "@libs/typescript-config/base.json",
+  "extends": "@libs/typescript-config/boardgameio.json",
   "include": ["src"]
 }

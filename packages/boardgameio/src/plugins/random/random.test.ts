@@ -10,7 +10,7 @@ import { Random } from './random';
 import { makeMove } from '../../core/action-creators';
 import { CreateGameReducer } from '../../core/reducer';
 import { InitializeGame } from '../../core/initialize';
-import { Client } from '../../client/client';
+import { Client } from '../../client';
 import type { Game } from '../../types';
 import { PlayerView } from '../main';
 

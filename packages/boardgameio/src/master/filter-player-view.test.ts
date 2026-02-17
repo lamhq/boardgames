@@ -1,9 +1,8 @@
 import { getFilterPlayerView, redactLog } from './filter-player-view';
 import * as ActionCreators from '../core/action-creators';
 import { Master } from './master';
-import { InMemory } from '../server/db/inmemory';
-import { PlayerView } from '../core/player-view';
-import { INVALID_MOVE } from '../core/constants';
+import { InMemory } from '../server';
+import { PlayerView, INVALID_MOVE } from '../core';
 import type { Game, SyncInfo } from '../types';
 
 function TransportAPI(send = jest.fn(), sendAll = jest.fn()) {
@@ -128,7 +127,7 @@ describe('playerView - patch', () => {
 
   test('patch', async () => {
     await master.onUpdate(move, 0, 'matchID', '0');
-    expect(sendAll).toBeCalled();
+    expect(sendAll).toHaveBeenCalled();
 
     const payload = sendAll.mock.calls[sendAll.mock.calls.length - 1][0];
     expect(payload.type).toBe('patch');

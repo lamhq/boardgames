@@ -7,7 +7,7 @@
  */
 
 import { Flow } from './flow';
-import { Client } from '../client/client';
+import { Client } from '../client';
 import {
   UpdateTurnOrderState,
   Stage,

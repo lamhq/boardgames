@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { CreateGameReducer } from '../core/reducer';
+import { CreateGameReducer } from '../core';
 import { Bot } from './bot';
 import type { Game, PlayerID, State, Store } from '../types';
 

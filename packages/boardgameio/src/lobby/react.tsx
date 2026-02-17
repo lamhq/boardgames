@@ -6,14 +6,11 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Cookies from 'react-cookies';
-import PropTypes from 'prop-types';
-import type { DebugOpt } from '../client/client';
 import { Client } from '../client/react';
-import { MCTSBot } from '../ai/mcts-bot';
-import { Local } from '../client/transport/local';
-import { SocketIO } from '../client/transport/socketio';
+import { MCTSBot } from '../ai';
+import { Local, SocketIO } from '../client';
 import type { GameComponent } from './connection';
 import { LobbyConnection } from './connection';
 import LobbyLoginForm from './login-form';
@@ -39,7 +36,6 @@ type LobbyProps = {
   gameComponents: GameComponent[];
   lobbyServer?: string;
   gameServer?: string;
-  debug?: DebugOpt | boolean;
   clientFactory?: typeof Client;
   refreshInterval?: number;
   renderer?: (args: {
@@ -61,15 +57,7 @@ type LobbyProps = {
     handleExitMatch: () => void;
     handleRefreshMatches: () => Promise<void>;
     handleStartMatch: (gameName: string, matchOpts: MatchOpts) => void;
-  }) => JSX.Element;
-};
-
-type LobbyState = {
-  phase: LobbyPhases;
-  playerName: string;
-  runningMatch?: RunningMatch;
-  errorMsg: string;
-  credentialStore?: { [playerName: string]: string };
+  }) => React.ReactElement;
 };
 
 /**
@@ -84,319 +72,344 @@ type LobbyState = {
  *                              If not set, defaults to the server that served the page.
  * @param {function} clientFactory - Function that is used to create the game clients.
  * @param {number} refreshInterval - Interval between server updates (default: 2000ms).
- * @param {bool}   debug - Enable debug information (default: false).
  *
  * Returns:
  *   A React component that provides a UI to create, list, join, leave, play or
  *   spectate matches (game instances).
  */
-class Lobby extends React.Component<LobbyProps, LobbyState> {
-  static propTypes = {
-    gameComponents: PropTypes.array.isRequired,
-    lobbyServer: PropTypes.string,
-    gameServer: PropTypes.string,
-    debug: PropTypes.bool,
-    clientFactory: PropTypes.func,
-    refreshInterval: PropTypes.number,
-  };
 
-  static defaultProps = {
-    debug: false,
-    clientFactory: Client,
-    refreshInterval: 2000,
-  };
+function Lobby({
+  gameComponents,
+  lobbyServer,
+  gameServer,
+  clientFactory = Client,
+  refreshInterval = 2000,
+  renderer,
+}: LobbyProps) {
+  const [phase, setPhase] = useState<LobbyPhases>(LobbyPhases.ENTER);
+  const [playerName, setPlayerName] = useState('Visitor');
+  const [runningMatch, setRunningMatch] = useState<RunningMatch | undefined>();
+  const [errorMsg, setErrorMsg] = useState('');
+  const [credentialStore, setCredentialStore] = useState<Record<string, string>>({});
+  const [matches, setMatches] = useState<LobbyAPI.MatchList['matches']>([]);
 
-  state = {
-    phase: LobbyPhases.ENTER,
-    playerName: 'Visitor',
-    runningMatch: null,
-    errorMsg: '',
-    credentialStore: {},
-  };
+  const connectionRef = useRef<ReturnType<typeof LobbyConnection> | null>(null);
+  const currentIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  private connection?: ReturnType<typeof LobbyConnection>;
-  private _currentInterval?: NodeJS.Timeout;
-
-  constructor(props: LobbyProps) {
-    super(props);
-    this._createConnection(this.props);
-  }
-
-  componentDidMount() {
-    const cookie = Cookies.load('lobbyState') || {};
-    if (cookie.phase && cookie.phase === LobbyPhases.PLAY) {
-      cookie.phase = LobbyPhases.LIST;
-    }
-    if (cookie.phase && cookie.phase !== LobbyPhases.ENTER) {
-      this._startRefreshInterval();
-    }
-    this.setState({
-      phase: cookie.phase || LobbyPhases.ENTER,
-      playerName: cookie.playerName || 'Visitor',
-      credentialStore: cookie.credentialStore || {},
-    });
-  }
-
-  componentDidUpdate(prevProps: LobbyProps, prevState: LobbyState) {
-    const name = this.state.playerName;
-    const creds = this.state.credentialStore[name];
-    if (
-      prevState.phase !== this.state.phase ||
-      prevState.credentialStore[name] !== creds ||
-      prevState.playerName !== name
-    ) {
-      this._createConnection(this.props);
-      this._updateConnection();
-      const cookie = {
-        phase: this.state.phase,
-        playerName: name,
-        credentialStore: this.state.credentialStore,
-      };
-      Cookies.save('lobbyState', cookie, { path: '/' });
-    }
-    if (prevProps.refreshInterval !== this.props.refreshInterval) {
-      this._startRefreshInterval();
-    }
-  }
-
-  componentWillUnmount() {
-    this._clearRefreshInterval();
-  }
-
-  _startRefreshInterval() {
-    this._clearRefreshInterval();
-    this._currentInterval = setInterval(
-      this._updateConnection,
-      this.props.refreshInterval
-    );
-  }
-
-  _clearRefreshInterval() {
-    clearInterval(this._currentInterval);
-  }
-
-  _createConnection = (props: LobbyProps) => {
-    const name = this.state.playerName;
-    this.connection = LobbyConnection({
-      server: props.lobbyServer,
-      gameComponents: props.gameComponents,
-      playerName: name,
-      playerCredentials: this.state.credentialStore[name],
-    });
-  };
-
-  _updateCredentials = (playerName: string, credentials: string) => {
-    this.setState((prevState) => {
-      // clone store or componentDidUpdate will not be triggered
-      const store = Object.assign({}, prevState.credentialStore);
-      store[playerName] = credentials;
-      return { credentialStore: store };
-    });
-  };
-
-  _updateConnection = async () => {
-    await this.connection.refresh();
-    this.forceUpdate();
-  };
-
-  _enterLobby = (playerName: string) => {
-    this._startRefreshInterval();
-    this.setState({ playerName, phase: LobbyPhases.LIST });
-  };
-
-  _exitLobby = async () => {
-    this._clearRefreshInterval();
-    await this.connection.disconnect();
-    this.setState({ phase: LobbyPhases.ENTER, errorMsg: '' });
-  };
-
-  _createMatch = async (gameName: string, numPlayers: number) => {
-    try {
-      await this.connection.create(gameName, numPlayers);
-      await this.connection.refresh();
-      // rerender
-      this.setState({});
-    } catch (error) {
-      this.setState({ errorMsg: error.message });
-    }
-  };
-
-  _joinMatch = async (gameName: string, matchID: string, playerID: string) => {
-    try {
-      await this.connection.join(gameName, matchID, playerID);
-      await this.connection.refresh();
-      this._updateCredentials(
-        this.connection.playerName,
-        this.connection.playerCredentials
-      );
-    } catch (error) {
-      this.setState({ errorMsg: error.message });
-    }
-  };
-
-  _leaveMatch = async (gameName: string, matchID: string) => {
-    try {
-      await this.connection.leave(gameName, matchID);
-      await this.connection.refresh();
-      this._updateCredentials(
-        this.connection.playerName,
-        this.connection.playerCredentials
-      );
-    } catch (error) {
-      this.setState({ errorMsg: error.message });
-    }
-  };
-
-  _startMatch = (gameName: string, matchOpts: MatchOpts) => {
-    const gameCode = this.connection._getGameComponents(gameName);
-    if (!gameCode) {
-      this.setState({
-        errorMsg: 'game ' + gameName + ' not supported',
+  const createConnection = useCallback(
+    (newPlayerName: string, newCredentials?: string) => {
+      connectionRef.current = LobbyConnection({
+        server: lobbyServer,
+        gameComponents,
+        playerName: newPlayerName,
+        playerCredentials: newCredentials,
       });
-      return;
+    },
+    [lobbyServer, gameComponents]
+  );
+
+  const clearRefreshInterval = useCallback(() => {
+    if (currentIntervalRef.current) {
+      clearInterval(currentIntervalRef.current);
+      currentIntervalRef.current = undefined;
+    }
+  }, []);
+
+  const updateConnection = useCallback(async () => {
+    if (connectionRef.current) {
+      await connectionRef.current.refresh();
+      setMatches([...connectionRef.current.matches]);
+    }
+  }, []);
+
+  const startRefreshInterval = useCallback(() => {
+    clearRefreshInterval();
+    currentIntervalRef.current = setInterval(
+      updateConnection,
+      refreshInterval
+    );
+  }, [clearRefreshInterval, updateConnection, refreshInterval]);
+
+  // Mount effect: load from cookies
+  useEffect(() => {
+    const cookie = Cookies.load('lobbyState') || {};
+    let newPhase = cookie.phase || LobbyPhases.ENTER;
+    if (newPhase === LobbyPhases.PLAY) {
+      newPhase = LobbyPhases.LIST;
+    }
+    const newPlayerName = cookie.playerName || 'Visitor';
+    const newCredentialStore = cookie.credentialStore || {};
+
+    setPhase(newPhase);
+    setPlayerName(newPlayerName);
+    setCredentialStore(newCredentialStore);
+
+    if (newPhase !== LobbyPhases.ENTER) {
+      createConnection(newPlayerName, newCredentialStore[newPlayerName]);
+    } else {
+      createConnection(newPlayerName);
     }
 
-    let multiplayer = undefined;
-    if (matchOpts.numPlayers > 1) {
-      multiplayer = this.props.gameServer
-        ? SocketIO({ server: this.props.gameServer })
-        : SocketIO();
+    if (newPhase !== LobbyPhases.ENTER) {
+      startRefreshInterval();
     }
+  }, []);
 
-    if (matchOpts.numPlayers == 1) {
-      const maxPlayers = gameCode.game.maxPlayers;
-      const bots = {};
-      for (let i = 1; i < maxPlayers; i++) {
-        bots[i + ''] = MCTSBot;
-      }
-      multiplayer = Local({ bots });
-    }
+  // Handle changes to player name, phase, or credentials
+  useEffect(() => {
+    const creds = credentialStore[playerName];
+    createConnection(playerName, creds);
+    updateConnection();
 
-    const app = this.props.clientFactory({
-      game: gameCode.game,
-      board: gameCode.board,
-      debug: this.props.debug,
-      multiplayer,
-    });
-
-    const match = {
-      app: app,
-      matchID: matchOpts.matchID,
-      playerID: matchOpts.numPlayers > 1 ? matchOpts.playerID : '0',
-      credentials: this.connection.playerCredentials,
+    const cookie = {
+      phase,
+      playerName,
+      credentialStore,
     };
+    Cookies.save('lobbyState', cookie, { path: '/' });
+  }, [phase, playerName, credentialStore, createConnection, updateConnection]);
 
-    this._clearRefreshInterval();
-    this.setState({ phase: LobbyPhases.PLAY, runningMatch: match });
+  // Handle refreshInterval changes
+  useEffect(() => {
+    if (phase !== LobbyPhases.ENTER) {
+      startRefreshInterval();
+    }
+
+    return () => {
+      clearRefreshInterval();
+    };
+  }, [refreshInterval, phase, startRefreshInterval, clearRefreshInterval]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      clearRefreshInterval();
+    };
+  }, [clearRefreshInterval]);
+
+  const updateCredentials = useCallback(
+    (newPlayerName: string, credentials: string) => {
+      setCredentialStore((prevStore: Record<string, string>) => ({
+        ...prevStore,
+        [newPlayerName]: credentials,
+      }));
+    },
+    []
+  );
+
+  const enterLobby = useCallback((newPlayerName: string) => {
+    startRefreshInterval();
+    setPlayerName(newPlayerName);
+    setPhase(LobbyPhases.LIST);
+  }, [startRefreshInterval]);
+
+  const exitLobby = useCallback(async () => {
+    clearRefreshInterval();
+    if (connectionRef.current) {
+      await connectionRef.current.disconnect();
+    }
+    setPhase(LobbyPhases.ENTER);
+    setErrorMsg('');
+  }, [clearRefreshInterval]);
+
+  const createMatch = useCallback(
+    async (gameName: string, numPlayers: number) => {
+      try {
+        if (connectionRef.current) {
+          await connectionRef.current.create(gameName, numPlayers);
+          await connectionRef.current.refresh();
+          setMatches([...connectionRef.current.matches]);
+        }
+      } catch (error) {
+        setErrorMsg(error instanceof Error ? error.message : 'Unknown error');
+      }
+    },
+    []
+  );
+
+  const joinMatch = useCallback(
+    async (gameName: string, matchID: string, playerID: string) => {
+      try {
+        if (connectionRef.current) {
+          await connectionRef.current.join(gameName, matchID, playerID);
+          await connectionRef.current.refresh();
+          setMatches([...connectionRef.current.matches]);
+          updateCredentials(
+            connectionRef.current.playerName,
+            connectionRef.current.playerCredentials
+          );
+        }
+      } catch (error) {
+        setErrorMsg(error instanceof Error ? error.message : 'Unknown error');
+      }
+    },
+    [updateCredentials]
+  );
+
+  const leaveMatch = useCallback(
+    async (gameName: string, matchID: string) => {
+      try {
+        if (connectionRef.current) {
+          await connectionRef.current.leave(gameName, matchID);
+          await connectionRef.current.refresh();
+          setMatches([...connectionRef.current.matches]);
+          updateCredentials(
+            connectionRef.current.playerName,
+            connectionRef.current.playerCredentials
+          );
+        }
+      } catch (error) {
+        setErrorMsg(error instanceof Error ? error.message : 'Unknown error');
+      }
+    },
+    [updateCredentials]
+  );
+
+  const startMatch = useCallback(
+    (gameName: string, matchOpts: MatchOpts) => {
+      if (!connectionRef.current) return;
+
+      const gameCode = connectionRef.current._getGameComponents(gameName);
+      if (!gameCode) {
+        setErrorMsg('game ' + gameName + ' not supported');
+        return;
+      }
+
+      let multiplayer: ReturnType<typeof SocketIO> | ReturnType<typeof Local> | undefined = undefined;
+      if (matchOpts.numPlayers > 1) {
+        multiplayer = gameServer ? SocketIO({ server: gameServer }) : SocketIO();
+      }
+
+      if (matchOpts.numPlayers === 1) {
+        const maxPlayers = gameCode.game.maxPlayers;
+        const bots: Record<string, typeof MCTSBot> = {};
+        for (let i = 1; i < maxPlayers; i++) {
+          bots[i + ''] = MCTSBot;
+        }
+        multiplayer = Local({ bots });
+      }
+
+      const app = clientFactory({
+        game: gameCode.game,
+        board: gameCode.board,
+        multiplayer,
+      });
+
+      const match: RunningMatch = {
+        app,
+        matchID: matchOpts.matchID,
+        playerID: matchOpts.numPlayers > 1 ? matchOpts.playerID : '0',
+        credentials: connectionRef.current.playerCredentials,
+      };
+
+      clearRefreshInterval();
+      setPhase(LobbyPhases.PLAY);
+      setRunningMatch(match);
+    },
+    [gameServer, clientFactory, clearRefreshInterval]
+  );
+
+  const exitMatch = useCallback(() => {
+    startRefreshInterval();
+    setPhase(LobbyPhases.LIST);
+    setRunningMatch(undefined);
+  }, [startRefreshInterval]);
+
+  const getPhaseVisibility = (phaseValue: LobbyPhases) => {
+    return phase !== phaseValue ? 'hidden' : 'phase';
   };
 
-  _exitMatch = () => {
-    this._startRefreshInterval();
-    this.setState({ phase: LobbyPhases.LIST, runningMatch: null });
-  };
-
-  _getPhaseVisibility = (phase: LobbyPhases) => {
-    return this.state.phase !== phase ? 'hidden' : 'phase';
-  };
-
-  renderMatches = (
-    matches: LobbyAPI.MatchList['matches'],
-    playerName: string
+  const renderMatches = (
+    matchesList: LobbyAPI.MatchList['matches'],
+    name: string
   ) => {
-    return matches.map((match) => {
+    return matchesList.map((match) => {
       const { matchID, gameName, players } = match;
       return (
         <LobbyMatchInstance
           key={'instance-' + matchID}
           match={{ matchID, gameName, players: Object.values(players) }}
-          playerName={playerName}
-          onClickJoin={this._joinMatch}
-          onClickLeave={this._leaveMatch}
-          onClickPlay={this._startMatch}
+          playerName={name}
+          onClickJoin={joinMatch}
+          onClickLeave={leaveMatch}
+          onClickPlay={startMatch}
         />
       );
     });
   };
 
-  render() {
-    const { gameComponents, renderer } = this.props;
-    const { errorMsg, playerName, phase, runningMatch } = this.state;
+  if (renderer) {
+    return renderer({
+      errorMsg,
+      gameComponents,
+      matches,
+      phase,
+      playerName,
+      runningMatch,
+      handleEnterLobby: enterLobby,
+      handleExitLobby: exitLobby,
+      handleCreateMatch: createMatch,
+      handleJoinMatch: joinMatch,
+      handleLeaveMatch: leaveMatch,
+      handleExitMatch: exitMatch,
+      handleRefreshMatches: updateConnection,
+      handleStartMatch: startMatch,
+    });
+  }
 
-    if (renderer) {
-      return renderer({
-        errorMsg,
-        gameComponents,
-        matches: this.connection.matches,
-        phase,
-        playerName,
-        runningMatch,
-        handleEnterLobby: this._enterLobby,
-        handleExitLobby: this._exitLobby,
-        handleCreateMatch: this._createMatch,
-        handleJoinMatch: this._joinMatch,
-        handleLeaveMatch: this._leaveMatch,
-        handleExitMatch: this._exitMatch,
-        handleRefreshMatches: this._updateConnection,
-        handleStartMatch: this._startMatch,
-      });
-    }
+  return (
+    <div id="lobby-view" style={{ padding: 50 }}>
+      <div className={getPhaseVisibility(LobbyPhases.ENTER)}>
+        <LobbyLoginForm
+          key={playerName}
+          playerName={playerName}
+          onEnter={enterLobby}
+        />
+      </div>
 
-    return (
-      <div id="lobby-view" style={{ padding: 50 }}>
-        <div className={this._getPhaseVisibility(LobbyPhases.ENTER)}>
-          <LobbyLoginForm
-            key={playerName}
-            playerName={playerName}
-            onEnter={this._enterLobby}
+      <div className={getPhaseVisibility(LobbyPhases.LIST)}>
+        <p>Welcome, {playerName}</p>
+
+        <div className="phase-title" id="match-creation">
+          <span>Create a match:</span>
+          <LobbyCreateMatchForm
+            games={gameComponents}
+            createMatch={createMatch}
           />
         </div>
-
-        <div className={this._getPhaseVisibility(LobbyPhases.LIST)}>
-          <p>Welcome, {playerName}</p>
-
-          <div className="phase-title" id="match-creation">
-            <span>Create a match:</span>
-            <LobbyCreateMatchForm
-              games={gameComponents}
-              createMatch={this._createMatch}
-            />
-          </div>
-          <p className="phase-title">Join a match:</p>
-          <div id="instances">
-            <table>
-              <tbody>
-                {this.renderMatches(this.connection.matches, playerName)}
-              </tbody>
-            </table>
-            <span className="error-msg">
-              {errorMsg}
-              <br />
-            </span>
-          </div>
-          <p className="phase-title">
-            Matches that become empty are automatically deleted.
-          </p>
+        <p className="phase-title">Join a match:</p>
+        <div id="instances">
+          <table>
+            <tbody>{renderMatches(matches, playerName)}</tbody>
+          </table>
+          <span className="error-msg">
+            {errorMsg}
+            <br />
+          </span>
         </div>
+        <p className="phase-title">
+          Matches that become empty are automatically deleted.
+        </p>
+      </div>
 
-        <div className={this._getPhaseVisibility(LobbyPhases.PLAY)}>
-          {runningMatch && (
-            <runningMatch.app
-              matchID={runningMatch.matchID}
-              playerID={runningMatch.playerID}
-              credentials={runningMatch.credentials}
-            />
-          )}
-          <div className="buttons" id="match-exit">
-            <button onClick={this._exitMatch}>Exit match</button>
-          </div>
-        </div>
-
-        <div className="buttons" id="lobby-exit">
-          <button onClick={this._exitLobby}>Exit lobby</button>
+      <div className={getPhaseVisibility(LobbyPhases.PLAY)}>
+        {runningMatch && (
+          <runningMatch.app
+            matchID={runningMatch.matchID}
+            playerID={runningMatch.playerID}
+            credentials={runningMatch.credentials}
+          />
+        )}
+        <div className="buttons" id="match-exit">
+          <button onClick={exitMatch}>Exit match</button>
         </div>
       </div>
-    );
-  }
+
+      <div className="buttons" id="lobby-exit">
+        <button onClick={exitLobby}>Exit lobby</button>
+      </div>
+    </div>
+  );
 }
 
 export default Lobby;

@@ -8,7 +8,7 @@
 
 import produce from 'immer';
 import type { Plugin } from '../types';
-import { INVALID_MOVE } from '../core/constants';
+import { INVALID_MOVE } from '../core';
 
 /**
  * Plugin that allows using Immer to make immutable changes

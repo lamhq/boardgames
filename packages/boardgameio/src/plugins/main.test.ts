@@ -6,10 +6,10 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '../client/client';
+import { Client } from '../client';
 import { Local } from '../client/transport/local';
 import type { Game, Plugin } from '../types';
-import { GameMethod } from '../../packages/core';
+import { GameMethod } from '../core';
 
 describe('basic', () => {
   let client: ReturnType<typeof Client>;

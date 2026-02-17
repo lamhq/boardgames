@@ -7,16 +7,14 @@
  */
 
 import * as ActionCreators from '../core/action-creators';
-import { InitializeGame } from '../core/initialize';
-import { InMemory } from '../server/db/inmemory';
+import { InitializeGame, PlayerView, INVALID_MOVE } from '../core';
+import { InMemory } from '../server';
 import { Master } from './master';
 import { error } from '../core/logger';
 import type { Game, Server, State, LogEntry } from '../types';
 import { Auth } from '../server/auth';
 import * as StorageAPI from '../server/db/base';
 import * as dateMock from 'jest-date-mock';
-import { PlayerView } from '../core/player-view';
-import { INVALID_MOVE } from '../core/constants';
 
 jest.mock('../core/logger', () => ({
   info: jest.fn(),
@@ -191,7 +189,7 @@ describe('update', () => {
 
   test('basic', async () => {
     await master.onUpdate(action, 0, 'matchID', '0');
-    expect(sendAll).toBeCalled();
+    expect(sendAll).toHaveBeenCalled();
     const value = sendAll.mock.calls[0][0];
     expect(value.type).toBe('update');
     expect(value.args[0]).toBe('matchID');
@@ -380,9 +378,9 @@ describe('update', () => {
       expect(error).not.toHaveBeenCalled();
       const endStage = ActionCreators.gameEvent('endStage', undefined, '0');
       await master.onUpdate(endStage, 1, 'matchID', '0');
-      expect(error).not.toBeCalled();
+      expect(error).not.toHaveBeenCalled();
       await master.onUpdate(ActionCreators.undo(), 2, 'matchID', '0');
-      expect(error).not.toBeCalled();
+      expect(error).not.toHaveBeenCalled();
 
       // Clean-up active players.
       const endStage2 = ActionCreators.gameEvent('endStage', undefined, '1');
@@ -593,7 +591,7 @@ describe('patch', () => {
 
   test('basic', async () => {
     await master.onUpdate(move, 0, 'matchID', '0');
-    expect(sendAll).toBeCalled();
+    expect(sendAll).toHaveBeenCalled();
 
     const value = sendAll.mock.calls[0][0];
     expect(value.type).toBe('patch');
@@ -816,7 +814,7 @@ describe('subscribe', () => {
 
   test('sync', async () => {
     master.onSync('matchID', '0');
-    expect(callback).toBeCalledWith({
+    expect(callback).toHaveBeenCalledWith({
       matchID: 'matchID',
       state: expect.objectContaining({ _stateID: 0 }),
     });
@@ -825,7 +823,7 @@ describe('subscribe', () => {
   test('update', async () => {
     const action = ActionCreators.gameEvent('endTurn');
     master.onUpdate(action, 0, 'matchID', '0');
-    expect(callback).toBeCalledWith({
+    expect(callback).toHaveBeenCalledWith({
       matchID: 'matchID',
       action,
       state: expect.objectContaining({ _stateID: 1 }),

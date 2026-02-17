@@ -6,7 +6,4 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import PluginPlayer from '../src/plugins/plugin-player';
-import { PlayerPlugin } from '../src/plugins/plugin-player';
-
-export { PluginPlayer, PlayerPlugin };
+export { LobbyClient, LobbyClientError } from './client';

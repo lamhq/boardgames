@@ -1,4 +1,4 @@
-import { Client } from '../client/client';
+import { Client } from '../client';
 import type { Game } from '../types';
 
 describe('plugin-serializable', () => {

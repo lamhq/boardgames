@@ -1,4 +1,4 @@
-import { InitializeGame } from '../core/initialize';
+import { InitializeGame } from '../core';
 import type { Server, State, Game } from '../types';
 
 /**
