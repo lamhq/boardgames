@@ -1,8 +1,10 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "outDir": "./dist",
     "composite": false,
     "declaration": true,
     "declarationMap": true,
@@ -12,8 +14,7 @@
     "isolatedModules": true,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
-    "strict": true,    
-    "jsx": "react-jsx",
+    "strict": true,
     "useDefineForClassFields": true,
     "lib": ["ESNext", "DOM"],
     "sourceMap": true,
@@ -21,8 +22,9 @@
     "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true   
+    "noImplicitReturns": true,
+    "jsx": "react-jsx"
   },
   "include": ["src"],
-  "exclude": ["node_modules"]  
+  "exclude": ["node_modules"]
 }

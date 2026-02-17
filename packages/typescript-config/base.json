@@ -1,29 +1,20 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "esnext",
-    "resolveJsonModule": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "composite": false,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
     "esModuleInterop": true,
-    "incremental": false,
-    "lib": ["es2022", "DOM", "DOM.Iterable"],
-    "alwaysStrict": false,
-    "noFallthroughCasesInSwitch": false,
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "noImplicitThis": false,
-    "noPropertyAccessFromIndexSignature": false,
-    "noUncheckedIndexedAccess": false,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "preserveWatchOutput": true,
     "skipLibCheck": true,
-    "strict": false,
-    "strictBindCallApply": false,
-    "strictFunctionTypes": false,
-    "strictNullChecks": false,
-    "strictPropertyInitialization": false
+    "strict": true
   },
   "exclude": ["node_modules"]
 }
