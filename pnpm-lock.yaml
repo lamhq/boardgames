@@ -23,9 +23,6 @@ importers:
       '@libs/boardgame.io':
         specifier: workspace:^
         version: link:../../packages/boardgameio
-      '@libs/games':
-        specifier: workspace:*
-        version: link:../../packages/games
       '@nestjs/common':
         specifier: ^11.0.1
         version: 11.1.13(class-transformer@0.5.1)(class-validator@0.14.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -47,9 +44,6 @@ importers:
       class-validator:
         specifier: ^0.14.3
         version: 0.14.3
-      nanoid:
-        specifier: ^3.3.11
-        version: 3.3.11
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -140,9 +134,6 @@ importers:
       '@libs/boardgame.io':
         specifier: workspace:*
         version: link:../../packages/boardgameio
-      '@libs/games':
-        specifier: workspace:*
-        version: link:../../packages/games
       react:
         specifier: ^19.2.4
         version: 19.2.4
@@ -334,15 +325,6 @@ importers:
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.2(jiti@2.6.1))
-
-  packages/games:
-    dependencies:
-      '@libs/boardgame.io':
-        specifier: workspace:*
-        version: link:../boardgameio
-      '@libs/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
 
   packages/typescript-config: {}
 
