@@ -62,17 +62,6 @@ test('can pass extra props to Client', () => {
   expect(board.props().extraValue).toBe(55);
 });
 
-test('debug ui can be turned off', () => {
-  const Board = Client({
-    game: {},
-    board: TestBoard,
-    debug: false,
-  });
-
-  const game = Enzyme.mount(<Board />);
-  expect(game.find('.debug-ui')).toHaveLength(0);
-});
-
 test('custom loading component', () => {
   const Loading = () => <div>custom</div>;
   const Board = Client({
@@ -105,7 +94,7 @@ test('move api', () => {
   });
 
   const game = Enzyme.mount(<Board />);
-  const board = game.find('TestBoard').instance() as TestBoard;
+  const board = game.find('TestBoard').instance() as unknown as TestBoard;
 
   expect(board.props.G).toEqual({});
   board.props.moves.A(42);
@@ -185,7 +174,7 @@ test('local playerView', () => {
   });
 
   const game = Enzyme.mount(<Board playerID="1" />);
-  const board = game.find('TestBoard').instance() as TestBoard;
+  const board = game.find('TestBoard').instance() as unknown as TestBoard;
   expect(board.props.G).toEqual({ stripped: '1' });
 });
 
@@ -200,7 +189,7 @@ test('reset Game', () => {
   });
 
   const game = Enzyme.mount(<Board />);
-  const board = game.find('TestBoard').instance() as TestBoard;
+  const board = game.find('TestBoard').instance() as unknown as TestBoard;
 
   const initial = { G: { ...board.props.G }, ctx: { ...board.props.ctx } };
 

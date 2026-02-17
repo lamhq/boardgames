@@ -8,3 +8,5 @@
 
 export { Client } from './client';
 export { LobbyClient, LobbyClientError } from '../lobby/client';
+export { Local, SocketIO, NativeWebSocket } from './transport';
+export type { Transport, TransportOpts } from './transport/transport';

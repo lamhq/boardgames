@@ -1,10 +1,14 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "outDir": "./dist"
   },
-  "include": ["src/react"]
+  "include": [
+    "src/client",
+    "src/lobby",
+    "src/react"
+  ]
 }

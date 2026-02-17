@@ -7,7 +7,6 @@
  */
 
 import { nanoid } from 'nanoid/non-secure';
-// import 'svelte';
 import type { Dispatch, StoreEnhancer } from 'redux';
 import { createStore, compose, applyMiddleware } from 'redux';
 import * as Actions from '../core/action-types';

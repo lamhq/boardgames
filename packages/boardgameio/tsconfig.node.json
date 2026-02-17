@@ -1,9 +1,17 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "outDir": "./dist"
   },
-  "include": ["src/node"]
+  "include": [
+    "src/ai", 
+    "src/core",
+    "src/plugins",
+    "src/aws",
+    "src/server",
+    "src/master",
+    "src/testing"
+  ]
 }
