@@ -8,7 +8,7 @@
     "plan": "terraform plan -var-file=\"params.tfvars\"",
     "apply": "terraform apply -var-file=\"params.tfvars\" --auto-approve",
     "destroy": "terraform destroy -var-file=\"params.tfvars\"",
-    "fmt": "terraform fmt -recursive",
+    "format": "terraform fmt -recursive",
     "validate": "terraform validate"
   }
 }

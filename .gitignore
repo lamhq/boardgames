@@ -9,11 +9,6 @@ pnpm-lock.yaml
 .DS_Store
 Thumbs.db
 
-# IDE - VSCode (workspace, not individual settings)
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
-
 # IDE - Others
 .idea/
 *.swp

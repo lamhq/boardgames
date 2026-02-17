@@ -2,12 +2,10 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "esnext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "moduleDetection": "force",
     "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "incremental": false,
     "lib": ["es2022", "DOM", "DOM.Iterable"],

@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Web App",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "urlFilter": "http://localhost:6001/*",
+      "webRoot": "${workspaceFolder}/apps/web",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "/@/": "${workspaceFolder}/apps/web/src/",
+        "/*": "${workspaceFolder}/apps/web/*"
+      },
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

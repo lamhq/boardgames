@@ -29,7 +29,6 @@ export default function Play() {
         <div className="text-white text-xl">Loading game...</div>
       </div>
     ),
-    debug: true,
   });
 
   return (

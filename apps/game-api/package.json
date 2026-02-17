@@ -2,20 +2,11 @@
   "name": "game-api",
   "version": "0.0.1",
   "description": "",
-  "type": "module",
   "scripts": {
     "build": "node esbuild.mjs",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
     "dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test": "jest"
   },
   "dependencies": {
     "@libs/boardgame.io": "workspace:^",
@@ -42,7 +33,6 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
-    "@types/supertest": "^6.0.2",
     "esbuild": "^0.27.3",
     "esbuild-plugin-clean": "^1.0.1",
     "eslint": "^9.18.0",
@@ -52,7 +42,6 @@
     "jest": "^30.0.0",
     "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",
-    "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
