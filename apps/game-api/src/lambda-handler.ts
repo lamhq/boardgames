@@ -1,11 +1,10 @@
-import type { APIGatewayProxyWebsocketHandlerV2 } from 'aws-lambda';
-import { createGameHandler } from '@libs/boardgameio/aws';
+import { createApiGatewayWsHandler } from '@libs/boardgameio/server';
 import { TicTacToeGame } from './tic-tac-toe';
 
 /**
  * Export the configured handler for AWS Lambda
  */
-export const handler: APIGatewayProxyWebsocketHandlerV2 = createGameHandler({
+export const handler = createApiGatewayWsHandler({
   games: [TicTacToeGame],
   // Optional: Configure database backend
   // db: new DynamoDBStorageAPI(),

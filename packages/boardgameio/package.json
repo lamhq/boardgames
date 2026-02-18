@@ -9,73 +9,63 @@
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
-      "require": "./dist/types.js",
-      "import": "./dist/types.js"
-    },
-    "./aws": {
-      "types": "./dist/aws/index.d.ts",
-      "require": "./dist/aws/index.js",
-      "import": "./dist/aws/index.js"
+      "import": "./dist/types.js",
+      "require": "./dist/types.js"
     },
     "./client": {
       "types": "./dist/client/index.d.ts",
-      "require": "./dist/client/index.js",
-      "import": "./dist/client/index.js"
+      "import": "./dist/client/index.js",
+      "require": "./dist/client/index.js"
     },
     "./core": {
       "types": "./dist/core/index.d.ts",
-      "require": "./dist/core/index.js",
-      "import": "./dist/core/index.js"
+      "import": "./dist/core/index.js",
+      "require": "./dist/core/index.js"
     },
     "./debug": {
       "types": "./dist/debug/index.d.ts",
-      "require": "./dist/debug/index.js",
-      "import": "./dist/debug/index.js"
+      "import": "./dist/debug/index.js",
+      "require": "./dist/debug/index.js"
     },
     "./react": {
       "types": "./dist/react/index.d.ts",
-      "require": "./dist/react/index.js",
-      "import": "./dist/react/index.js"
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.js"
     },
     "./server": {
       "types": "./dist/server/index.d.ts",
-      "require": "./dist/server/index.js",
-      "import": "./dist/server/index.js"
+      "import": "./dist/server/index.js",
+      "require": "./dist/server/index.js"
     },
     "./ai": {
       "types": "./dist/ai/index.d.ts",
-      "require": "./dist/ai/index.js",
-      "import": "./dist/ai/index.js"
+      "import": "./dist/ai/index.js",
+      "require": "./dist/ai/index.js"
     },
     "./plugins": {
       "types": "./dist/plugins/index.d.ts",
-      "require": "./dist/plugins/index.js",
-      "import": "./dist/plugins/index.js"
+      "import": "./dist/plugins/index.js",
+      "require": "./dist/plugins/index.js"
     },
     "./master": {
       "types": "./dist/master/index.d.ts",
-      "require": "./dist/master/index.js",
-      "import": "./dist/master/index.js"
+      "import": "./dist/master/index.js",
+      "require": "./dist/master/index.js"
     },
     "./multiplayer": {
       "types": "./dist/multiplayer/index.d.ts",
-      "require": "./dist/multiplayer/index.js",
-      "import": "./dist/multiplayer/index.js"
-    },
-    "./internal": {
-      "types": "./dist/internal/index.d.ts",
-      "require": "./dist/internal/index.js",
-      "import": "./dist/internal/index.js"
+      "import": "./dist/multiplayer/index.js",
+      "require": "./dist/multiplayer/index.js"
     },
     "./testing": {
       "types": "./dist/testing/index.d.ts",
-      "require": "./dist/testing/index.js",
-      "import": "./dist/testing/index.js"
+      "import": "./dist/testing/index.js",
+      "require": "./dist/testing/index.js"
     },
     "./lobby": {
       "types": "./dist/lobby/index.d.ts",
-      "require": "./dist/lobby/index.js",
-      "import": "./dist/lobby/index.js"
+      "import": "./dist/lobby/index.js",
+      "require": "./dist/lobby/index.js"
     }
   },
   "dependencies": {
@@ -111,8 +101,6 @@
     "@types/jest": "^30.0.0",
     "@types/koa__cors": "^3.0.3",
     "@types/node": "^22.10.7",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
     "@types/supertest": "^6.0.2",
@@ -120,6 +108,8 @@
     "enzyme-adapter-react-16": "^1.15.8",
     "jest": "^30.0.0",
     "jest-date-mock": "^1.0.10",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",

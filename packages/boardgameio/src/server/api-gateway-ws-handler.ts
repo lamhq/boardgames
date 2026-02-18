@@ -1,12 +1,25 @@
 import type { APIGatewayProxyWebsocketHandlerV2 } from "aws-lambda";
-import type { StorageAPI } from "../types";
+import type { Game, StorageAPI, Server } from "../types";
 import { Master } from "../master";
-import { Auth } from "../server/auth";
-import { DBFromEnv } from "../server/db";
+import { Auth } from "./auth";
+import { DBFromEnv } from "./db";
 import { ProcessGameConfig } from "../core";
 import type { TransportAPI } from "../master/master";
 import { nanoid } from "nanoid";
-import type { ClientConnection, GameHandlerConfig } from "./types";
+
+export interface ClientConnection {
+  matchID: string;
+  playerID: string | undefined;
+  credentials: string | undefined;
+}
+
+export interface GameHandlerConfig {
+  games: Game[];
+  db?: StorageAPI.Async | StorageAPI.Sync;
+  uuid?: () => string;
+  authenticateCredentials?: Server.AuthenticateCredentials;
+  generateCredentials?: Server.GenerateCredentials;
+}
 
 /**
  * In-memory store for active connections.
@@ -22,7 +35,7 @@ const connections = new Map<string, ClientConnection>();
  *
  * Usage example:
  * ```typescript
- * const handler = createGameHandler({
+ * const handler = createApiGatewayWsHandler({
  *   games: [MyGame],
  *   db: new InMemory(),
  * });
@@ -36,7 +49,7 @@ const connections = new Map<string, ClientConnection>();
  *   - generateCredentials: Custom credential generator (optional)
  * @returns AWS Lambda WebSocket handler
  */
-export function createGameHandler({
+export function createApiGatewayWsHandler({
   games: rawGames,
   db: rawDb,
   uuid: uuidFn = () => nanoid(11),
