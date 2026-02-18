@@ -1,7 +1,9 @@
 {
   "name": "@libs/boardgameio",
   "scripts": {
-    "build": "tsc",
+    "build:react": "tsc -p tsconfig.browser.json",
+    "build:node": "tsc -p tsconfig.node.json",
+    "build": "pnpm run build:node && pnpm run build:react",    
     "test": "jest"
   },
   "exports": {

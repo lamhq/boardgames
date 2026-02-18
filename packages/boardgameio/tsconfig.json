@@ -1,18 +1,18 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "./dist",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "isolatedModules": false,
-    "sourceMap": true,
     "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "incremental": true,
-    "jsx": "react-jsx",
-    "types": ["jest", "node", "@testing-library/jest-dom"],
+    "skipLibCheck": true,
     "alwaysStrict": false,
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
@@ -22,13 +22,10 @@
     "noUncheckedIndexedAccess": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "skipLibCheck": true,
     "strict": false,
     "strictBindCallApply": false,
     "strictFunctionTypes": false,
     "strictNullChecks": false,
     "strictPropertyInitialization": false
-  },
-  "include": ["src"],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
+  }
 }
