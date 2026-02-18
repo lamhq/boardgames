@@ -7,12 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
-    "@libs/boardgame.io": "workspace:^",
+    "@libs/boardgameio": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "aws-lambda": "^1.0.7",
-    "boardgame.io": "^0.50.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "reflect-metadata": "^0.2.2",
@@ -21,7 +20,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
-    "@libs/typescript-config": "workspace:^",
+    "@libs/typescript-config": "workspace:*",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",

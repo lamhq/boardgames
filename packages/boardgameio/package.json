@@ -1,5 +1,5 @@
 {
-  "name": "@libs/boardgame.io",
+  "name": "@libs/boardgameio",
   "scripts": {
     "build": "tsc",
     "test": "jest"
@@ -7,68 +7,73 @@
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
-      "import": "./dist/types.js",
-      "require": "./dist/types.js"
+      "require": "./dist/types.js",
+      "import": "./dist/types.js"
     },
     "./aws": {
       "types": "./dist/aws/index.d.ts",
-      "import": "./dist/aws/index.js",
-      "require": "./dist/aws/index.js"
+      "require": "./dist/aws/index.js",
+      "import": "./dist/aws/index.js"
     },
     "./client": {
       "types": "./dist/client/index.d.ts",
-      "import": "./dist/client/index.js",
-      "require": "./dist/client/index.js"
+      "require": "./dist/client/index.js",
+      "import": "./dist/client/index.js"
     },
     "./core": {
       "types": "./dist/core/index.d.ts",
-      "import": "./dist/core/index.js",
-      "require": "./dist/core/index.js"
+      "require": "./dist/core/index.js",
+      "import": "./dist/core/index.js"
     },
     "./debug": {
       "types": "./dist/debug/index.d.ts",
-      "import": "./dist/debug/index.js",
-      "require": "./dist/debug/index.js"
+      "require": "./dist/debug/index.js",
+      "import": "./dist/debug/index.js"
     },
     "./react": {
       "types": "./dist/react/index.d.ts",
-      "import": "./dist/react/index.js",
-      "require": "./dist/react/index.js"
+      "require": "./dist/react/index.js",
+      "import": "./dist/react/index.js"
     },
     "./server": {
       "types": "./dist/server/index.d.ts",
-      "import": "./dist/server/index.js",
-      "require": "./dist/server/index.js"
+      "require": "./dist/server/index.js",
+      "import": "./dist/server/index.js"
     },
     "./ai": {
       "types": "./dist/ai/index.d.ts",
-      "import": "./dist/ai/index.js",
-      "require": "./dist/ai/index.js"
+      "require": "./dist/ai/index.js",
+      "import": "./dist/ai/index.js"
     },
     "./plugins": {
       "types": "./dist/plugins/index.d.ts",
-      "import": "./dist/plugins/index.js",
-      "require": "./dist/plugins/index.js"
+      "require": "./dist/plugins/index.js",
+      "import": "./dist/plugins/index.js"
     },
     "./master": {
       "types": "./dist/master/index.d.ts",
-      "import": "./dist/master/index.js",
-      "require": "./dist/master/index.js"
+      "require": "./dist/master/index.js",
+      "import": "./dist/master/index.js"
     },
     "./multiplayer": {
       "types": "./dist/multiplayer/index.d.ts",
-      "import": "./dist/multiplayer/index.js",
-      "require": "./dist/multiplayer/index.js"
+      "require": "./dist/multiplayer/index.js",
+      "import": "./dist/multiplayer/index.js"
     },
     "./internal": {
       "types": "./dist/internal/index.d.ts",
-      "import": "./dist/internal/index.js",
-      "require": "./dist/internal/index.js"
+      "require": "./dist/internal/index.js",
+      "import": "./dist/internal/index.js"
     },
     "./testing": {
       "types": "./dist/testing/index.d.ts",
-      "import": "./dist/testing/index.js",
-      "require": "./dist/testing/index.js"
+      "require": "./dist/testing/index.js",
+      "import": "./dist/testing/index.js"
+    },
+    "./lobby": {
+      "types": "./dist/lobby/index.d.ts",
+      "require": "./dist/lobby/index.js",
+      "import": "./dist/lobby/index.js"
     }
   },
   "dependencies": {

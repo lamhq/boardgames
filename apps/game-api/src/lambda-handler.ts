@@ -1,5 +1,5 @@
 import type { APIGatewayProxyWebsocketHandlerV2 } from 'aws-lambda';
-import { createGameHandler } from '@libs/boardgame.io/aws';
+import { createGameHandler } from '@libs/boardgameio/aws';
 import { TicTacToeGame } from './tic-tac-toe';
 
 /**

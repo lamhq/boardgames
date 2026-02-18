@@ -2,8 +2,8 @@
   "extends": "@libs/typescript-config/nestjs.json",
   "compilerOptions": {
     "target": "esnext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "baseUrl": "./",
     "outDir": "./dist"
   },

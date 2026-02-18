@@ -1,5 +1,5 @@
 {
-  "name": "@boardgames/terraform",
+  "name": "infra",
   "version": "0.0.1",
   "description": "Terraform configuration for AWS infrastructure",
   "private": true,
