@@ -4,7 +4,9 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "outDir": "./dist",
+    "lib": ["ESNext", "DOM"],
+    "types": ["react", "react-dom"],
+    "jsx": "react-jsx",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -27,17 +29,7 @@
     "strictBindCallApply": false,
     "strictFunctionTypes": false,
     "strictNullChecks": false,
-    "strictPropertyInitialization": false,
-    "lib": ["ESNext", "DOM"],
-    "types": ["react", "react-dom"],
-    "jsx": "react-jsx"
+    "strictPropertyInitialization": false
   },
-  "include": ["src"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.spec.ts"
-  ]
+  "include": ["src"]
 }

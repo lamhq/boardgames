@@ -2,9 +2,8 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "outDir": "./dist",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -31,12 +30,5 @@
     "lib": ["ESNext"],
     "types": ["node", "jest"]
   },
-  "include": ["src"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.spec.ts"
-  ]
+  "include": ["src"]
 }

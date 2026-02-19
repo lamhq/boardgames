@@ -1,7 +1,10 @@
 {
   "name": "@bgio/client",
+  "main": "./dist/client/index.js",
+  "module": "./dist/client/index.js",
+  "types": "./dist/client/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "test": "jest"
   },
   "exports": {
