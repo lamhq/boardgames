@@ -1,4 +1,4 @@
-import { createApiGatewayWsHandler } from '@libs/boardgameio/server';
+import { createApiGatewayWsHandler } from '@boardgameio/server';
 import { TicTacToeGame } from './tic-tac-toe';
 
 /**

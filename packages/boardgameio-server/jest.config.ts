@@ -1,0 +1,15 @@
+export default {
+  moduleFileExtensions: ["js", "json", "ts"],
+  rootDir: "src",
+  testRegex: ".*\\.test\\.ts$",
+  transform: {
+    "^.+\\.(t|j)s$": ["ts-jest"],
+  },
+  collectCoverageFrom: ["**/*.(t|j)s"],
+  coverageDirectory: "../coverage",
+  testEnvironment: "node",
+  moduleNameMapper: {
+    "^@boardgameio/core$": "<rootDir>/../../boardgameio-core/src",
+    "^@boardgameio/core/(.*)$": "<rootDir>/../../boardgameio-core/src/$1",
+  },
+};

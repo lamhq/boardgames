@@ -1,5 +1,5 @@
-import type { Game, Move } from '@libs/boardgameio';
-import { INVALID_MOVE } from '@libs/boardgameio/core';
+import type { Game, Move } from '@boardgameio/core';
+import { INVALID_MOVE } from '@boardgameio/core';
 
 export interface TicTacToeGameState {
   cells: (string | null)[];

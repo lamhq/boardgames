@@ -1,4 +1,4 @@
-import { Server, Origins } from '@libs/boardgameio/server';
+import { Server, Origins } from '@boardgameio/server';
 import { TicTacToeGame } from './tic-tac-toe';
 
 const server = Server({
