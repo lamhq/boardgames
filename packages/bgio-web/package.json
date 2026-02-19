@@ -1,5 +1,5 @@
 {
-  "name": "@bgio/client",
+  "name": "@bgio/web",
   "main": "./dist/client/index.js",
   "module": "./dist/client/index.js",
   "types": "./dist/client/index.d.ts",

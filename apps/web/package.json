@@ -9,7 +9,7 @@
     "debug": "pnpm run dev && ./scripts/start-chrome-debug.sh"
   },
   "dependencies": {
-    "@bgio/client": "workspace:*",
+    "@bgio/web": "workspace:*",
     "@bgio/core": "workspace:*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
