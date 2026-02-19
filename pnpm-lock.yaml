@@ -20,12 +20,12 @@ importers:
 
   apps/game-api:
     dependencies:
-      '@boardgameio/core':
+      '@bgio/core':
         specifier: workspace:*
-        version: link:../../packages/boardgameio-core
-      '@boardgameio/server':
+        version: link:../../packages/bgio-core
+      '@bgio/server':
         specifier: workspace:*
-        version: link:../../packages/boardgameio-server
+        version: link:../../packages/bgio-server
       '@nestjs/common':
         specifier: ^11.0.1
         version: 11.1.13(class-transformer@0.5.1)(class-validator@0.14.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -131,12 +131,12 @@ importers:
 
   apps/web:
     dependencies:
-      '@boardgameio/client':
+      '@bgio/client':
         specifier: workspace:*
-        version: link:../../packages/boardgameio-client
-      '@boardgameio/core':
+        version: link:../../packages/bgio-client
+      '@bgio/core':
         specifier: workspace:*
-        version: link:../../packages/boardgameio-core
+        version: link:../../packages/bgio-core
       react:
         specifier: ^19.2.4
         version: 19.2.4
@@ -193,11 +193,11 @@ importers:
         specifier: ^25.2.3
         version: 25.2.3
 
-  packages/boardgameio-client:
+  packages/bgio-client:
     dependencies:
-      '@boardgameio/core':
+      '@bgio/core':
         specifier: workspace:*
-        version: link:../boardgameio-core
+        version: link:../bgio-core
       nanoid:
         specifier: ^3.1.30
         version: 3.3.11
@@ -260,7 +260,7 @@ importers:
         specifier: ^5.7.3
         version: 5.9.3
 
-  packages/boardgameio-core:
+  packages/bgio-core:
     dependencies:
       immer:
         specifier: ^9.0.5
@@ -309,11 +309,11 @@ importers:
         specifier: ^5.7.3
         version: 5.9.3
 
-  packages/boardgameio-server:
+  packages/bgio-server:
     dependencies:
-      '@boardgameio/core':
+      '@bgio/core':
         specifier: workspace:*
-        version: link:../boardgameio-core
+        version: link:../bgio-core
       '@koa/cors':
         specifier: ^3.1.0
         version: 3.4.3

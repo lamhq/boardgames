@@ -11,8 +11,8 @@
     "debug": "pnpm run dev && ./scripts/start-chrome-debug.sh"
   },
   "dependencies": {
-    "@boardgameio/client": "workspace:*",
-    "@boardgameio/core": "workspace:*",
+    "@bgio/client": "workspace:*",
+    "@bgio/core": "workspace:*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hook-form": "^7.71.1",

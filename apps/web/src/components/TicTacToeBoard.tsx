@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { createPortal } from "react-dom";
-import type { BoardProps } from '@boardgameio/client/react';
+import type { BoardProps } from '@bgio/client/react';
 import type { TicTacToeGameState } from '../tic-tac-toe';
 
 interface TicTacToeBoardProps extends BoardProps<TicTacToeGameState> {
