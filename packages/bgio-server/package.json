@@ -1,8 +1,7 @@
 {
   "name": "@bgio/server",
-  "private": true,
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "tsc",
     "test": "jest"
   },
   "exports": {

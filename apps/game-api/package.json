@@ -1,7 +1,7 @@
 {
   "name": "game-api",
   "scripts": {
-    "build": "node esbuild.mjs",
+    "build": "tsc --noEmit && node esbuild.mjs",
     "dev": "nest start --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest"
