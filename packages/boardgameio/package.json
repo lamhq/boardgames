@@ -3,69 +3,64 @@
   "scripts": {
     "build:web": "tsc -p tsconfig.web.json",
     "build:node": "tsc -p tsconfig.node.json",
-    "build": "pnpm run build:node && pnpm run build:web",    
+    "build": "rm -rf dist && pnpm run build:node && pnpm run build:web",    
     "test": "jest"
   },
   "exports": {
     ".": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/types.js",
-      "require": "./dist/types.js"
+      "types": "./dist/core/types.d.ts",
+      "import": "./dist/core/types.js",
+      "require": "./dist/core/types.js"
     },
     "./client": {
-      "types": "./dist/client/index.d.ts",
-      "import": "./dist/client/index.js",
-      "require": "./dist/client/index.js"
+      "types": "./dist/browser/client/index.d.ts",
+      "import": "./dist/browser/client/index.js",
+      "require": "./dist/browser/client/index.js"
     },
     "./core": {
       "types": "./dist/core/index.d.ts",
       "import": "./dist/core/index.js",
       "require": "./dist/core/index.js"
     },
-    "./debug": {
-      "types": "./dist/debug/index.d.ts",
-      "import": "./dist/debug/index.js",
-      "require": "./dist/debug/index.js"
-    },
     "./react": {
-      "types": "./dist/react/index.d.ts",
-      "import": "./dist/react/index.js",
-      "require": "./dist/react/index.js"
+      "types": "./dist/browser/react/index.d.ts",
+      "import": "./dist/browser/react/index.js",
+      "require": "./dist/browser/react/index.js"
     },
     "./server": {
-      "types": "./dist/server/index.d.ts",
-      "import": "./dist/server/index.js",
-      "require": "./dist/server/index.js"
+      "types": "./dist/node/server/index.d.ts",
+      "import": "./dist/node/server/index.js",
+      "require": "./dist/node/server/index.js"
     },
     "./ai": {
-      "types": "./dist/ai/index.d.ts",
-      "import": "./dist/ai/index.js",
-      "require": "./dist/ai/index.js"
+      "types": "./dist/core/ai/index.d.ts",
+      "import": "./dist/core/ai/index.js",
+      "require": "./dist/core/ai/index.js"
     },
     "./plugins": {
-      "types": "./dist/plugins/index.d.ts",
-      "import": "./dist/plugins/index.js",
-      "require": "./dist/plugins/index.js"
+      "types": "./dist/core/plugins/index.d.ts",
+      "import": "./dist/core/plugins/index.js",
+      "require": "./dist/core/plugins/index.js"
     },
     "./master": {
-      "types": "./dist/master/index.d.ts",
-      "import": "./dist/master/index.js",
-      "require": "./dist/master/index.js"
+      "types": "./dist/core/master/index.d.ts",
+      "import": "./dist/core/master/index.js",
+      "require": "./dist/core/master/index.js"
     },
     "./multiplayer": {
-      "types": "./dist/multiplayer/index.d.ts",
-      "import": "./dist/multiplayer/index.js",
-      "require": "./dist/multiplayer/index.js"
+      "types": "./dist/browser/multiplayer/index.d.ts",
+      "import": "./dist/browser/multiplayer/index.js",
+      "require": "./dist/browser/multiplayer/index.js"
     },
     "./testing": {
-      "types": "./dist/testing/index.d.ts",
-      "import": "./dist/testing/index.js",
-      "require": "./dist/testing/index.js"
+      "types": "./dist/core/testing/index.d.ts",
+      "import": "./dist/core/testing/index.js",
+      "require": "./dist/core/testing/index.js"
     },
     "./lobby": {
-      "types": "./dist/lobby/index.d.ts",
-      "import": "./dist/lobby/index.js",
-      "require": "./dist/lobby/index.js"
+      "types": "./dist/browser/lobby/index.d.ts",
+      "import": "./dist/browser/lobby/index.js",
+      "require": "./dist/browser/lobby/index.js"
     }
   },
   "dependencies": {

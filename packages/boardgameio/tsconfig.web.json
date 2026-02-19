@@ -2,29 +2,20 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "esnext",
+    "moduleResolution": "bundler",
     "outDir": "./dist",
     "lib": ["ESNext", "DOM"],
     "types": ["react", "react-dom"],
     "jsx": "react-jsx"
   },
   "include": [
-    "src/types.ts",
     "src/core",
-    "src/client",
-    "src/lobby",
-    "src/multiplayer",
-    "src/react"
+    "src/browser"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "src/ai", 
-    "src/core",
-    "src/plugins",
-    "src/aws",
-    "src/server",
-    "src/master",
-    "src/testing",
+    "src/node",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts"

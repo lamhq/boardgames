@@ -7,7 +7,7 @@
  */
 
 import * as Actions from './action-types';
-import type { SyncInfo, State, LogEntry } from '../types';
+import type { SyncInfo, State, LogEntry } from './types';
 import type { Operation } from 'rfc6902';
 
 /**

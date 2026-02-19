@@ -7,7 +7,7 @@
  */
 
 import * as Actions from './action-types';
-import * as plugins from '../plugins/main';
+import * as plugins from './plugins/main';
 import { ProcessGameConfig } from './game';
 import { error } from './logger';
 import { INVALID_MOVE } from './constants';
@@ -25,7 +25,7 @@ import type {
   TransientMetadata,
   TransientState,
   Undo,
-} from '../types';
+} from './types';
 import { stripTransients } from './action-creators';
 import { ActionErrorType, UpdateErrorType } from './errors';
 import { applyPatch } from 'rfc6902';

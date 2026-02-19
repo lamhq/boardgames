@@ -7,21 +7,13 @@
     "types": ["node", "jest"]
   },
   "include": [
-    "src/types.ts",
-    "src/ai", 
     "src/core",
-    "src/plugins",
-    "src/server",
-    "src/master",
-    "src/testing"
+    "src/node"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "src/client",
-    "src/lobby",
-    "src/multiplayer",
-    "src/react",
+    "src/browser",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts"

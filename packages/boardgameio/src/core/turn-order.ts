@@ -7,7 +7,7 @@
  */
 
 import * as logging from './logger';
-import * as plugin from '../plugins/main';
+import * as plugin from './plugins/main';
 import type {
   Ctx,
   StageArg,
@@ -16,7 +16,7 @@ import type {
   State,
   TurnConfig,
   FnContext,
-} from '../types';
+} from './types';
 import { supportDeprecatedMoveLimit } from './backwards-compatibility';
 
 export function SetActivePlayers(ctx: Ctx, arg: ActivePlayersArg): Ctx {

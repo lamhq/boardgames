@@ -7,12 +7,12 @@
  */
 
 import { ProcessGameConfig } from './game';
-import { Client } from '../client';
-import { error } from '../core/logger';
+import { Client } from '../browser/client';
+import { error } from './logger';
 import { InitializeGame } from './initialize';
-import type { Game } from '../types';
+import type { Game } from './types';
 
-jest.mock('../core/logger', () => ({
+jest.mock('./logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));

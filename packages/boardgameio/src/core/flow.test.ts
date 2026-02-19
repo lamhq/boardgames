@@ -7,13 +7,13 @@
  */
 
 import { makeMove, gameEvent } from './action-creators';
-import { Client } from '../client';
+import { Client } from '../browser/client';
 import { Flow } from './flow';
 import { TurnOrder } from './turn-order';
-import { error } from '../core/logger';
-import type { Ctx, State, Game, PlayerID, MoveFn } from '../types';
+import { error } from './logger';
+import type { Ctx, State, Game, PlayerID, MoveFn } from './types';
 
-jest.mock('../core/logger', () => ({
+jest.mock('./logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));

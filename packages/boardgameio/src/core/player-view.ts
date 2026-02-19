@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import type { Game, PlayerID } from '../types';
+import type { Game, PlayerID } from './types';
 
 /**
  * PlayerView reducers.

@@ -7,7 +7,7 @@
  */
 
 import { Flow } from './flow';
-import { Client } from '../client';
+import { Client } from '../browser/client';
 import {
   UpdateTurnOrderState,
   Stage,
@@ -17,10 +17,10 @@ import {
 import { makeMove, gameEvent } from './action-creators';
 import { CreateGameReducer } from './reducer';
 import { InitializeGame } from './initialize';
-import { error } from '../core/logger';
-import type { Game, State } from '../types';
+import { error } from './logger';
+import type { Game, State } from './types';
 
-jest.mock('../core/logger', () => ({
+jest.mock('./logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));

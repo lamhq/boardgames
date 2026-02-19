@@ -15,7 +15,7 @@ import {
   TurnOrder,
 } from './turn-order';
 import { gameEvent } from './action-creators';
-import * as plugin from '../plugins/main';
+import * as plugin from './plugins/main';
 import * as logging from './logger';
 import type {
   ActionPayload,
@@ -29,7 +29,7 @@ import type {
   PhaseConfig,
   PlayerID,
   Move,
-} from '../types';
+} from './types';
 import { GameMethod } from './game-methods';
 import { supportDeprecatedMoveLimit } from './backwards-compatibility';
 

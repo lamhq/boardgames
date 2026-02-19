@@ -20,10 +20,10 @@ import {
   redo,
   patch,
 } from './action-creators';
-import { error } from '../core/logger';
-import type { Game, State, SyncInfo } from '../types';
+import { error } from './logger';
+import type { Game, State, SyncInfo } from './types';
 
-jest.mock('../core/logger', () => ({
+jest.mock('./logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));
