@@ -39,6 +39,7 @@
     "react-dom": "^19.2.4"
   },
   "devDependencies": {
+    "@libs/typescript-config": "workspace:*",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/enzyme": "^3.10.19",
     "@types/jest": "^30.0.0",

@@ -30,6 +30,7 @@
     "socket.io": "^4.5.0"
   },
   "devDependencies": {
+    "@libs/typescript-config": "workspace:*",
     "@types/aws-lambda": "^8.10.160",
     "@types/cors": "^2.8.19",
     "@types/jest": "^30.0.0",

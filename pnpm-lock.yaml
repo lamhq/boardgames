@@ -220,6 +220,9 @@ importers:
         specifier: ^6.3.6
         version: 6.3.6
     devDependencies:
+      '@libs/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -278,6 +281,9 @@ importers:
         specifier: ^4.5.0
         version: 4.8.3
     devDependencies:
+      '@libs/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@types/aws-lambda':
         specifier: ^8.10.160
         version: 8.10.160
@@ -339,6 +345,9 @@ importers:
         specifier: ^4.1.3
         version: 4.1.3
     devDependencies:
+      '@libs/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
