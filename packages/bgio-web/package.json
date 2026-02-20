@@ -5,6 +5,7 @@
   "types": "./dist/client/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "lint": "tsc --noEmit",
     "test": "jest"
   },
   "exports": {
@@ -19,15 +20,10 @@
     "./multiplayer": {
       "types": "./dist/multiplayer/index.d.ts",
       "import": "./dist/multiplayer/index.js"
-    },
-    "./lobby": {
-      "types": "./dist/lobby/index.d.ts",
-      "import": "./dist/lobby/index.js"
     }
   },
   "dependencies": {
     "nanoid": "^3.1.30",
-    "react-cookies": "^0.1.0",
     "redux": "^4.1.0",
     "rfc6902": "^5.0.0",
     "setimmediate": "^1.0.5",

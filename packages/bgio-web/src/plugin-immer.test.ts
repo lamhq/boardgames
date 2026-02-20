@@ -8,10 +8,10 @@
 
 import { Client } from '@bgio/web';
 import type { _ClientImpl } from '@bgio/web';
-import { INVALID_MOVE } from '..';
+import { INVALID_MOVE } from '@bgio/core';
 
 // Surpress invalid move error logging
-jest.mock('../logger');
+jest.mock('@bgio/core/logger');
 
 describe('immer', () => {
   let client: _ClientImpl;

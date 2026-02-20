@@ -13,7 +13,7 @@ import type { Master } from '@bgio/core/master';
 import type { ChatMessage, State } from '@bgio/core/types';
 import { ProcessGameConfig } from '@bgio/core';
 
-jest.mock('../../../core/logger', () => ({
+jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));

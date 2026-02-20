@@ -12,5 +12,7 @@ export default {
   moduleNameMapper: {
     "^@bgio/core$": "<rootDir>/../../bgio-core/src",
     "^@bgio/core/(.*)$": "<rootDir>/../../bgio-core/src/$1",
+    "^@bgio/web$": "<rootDir>/client",
+    "^@bgio/web/(.*)$": "<rootDir>/$1",
   },
 };

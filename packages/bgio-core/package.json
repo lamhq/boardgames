@@ -60,6 +60,11 @@
       "import": "./dist/esm/errors.js",
       "require": "./dist/cjs/errors.js"
     },
+    "./flow": {
+      "types": "./dist/esm/flow.d.ts",
+      "import": "./dist/esm/flow.js",
+      "require": "./dist/cjs/flow.js"
+    },
     "./game": {
       "types": "./dist/esm/game.d.ts",
       "import": "./dist/esm/game.js",
@@ -95,10 +100,25 @@
       "import": "./dist/esm/player-view.js",
       "require": "./dist/cjs/player-view.js"
     },
+    "./plugins/events": {
+      "types": "./dist/esm/plugins/events/events.d.ts",
+      "import": "./dist/esm/plugins/events/events.js",
+      "require": "./dist/cjs/plugins/events/events.js"
+    },
     "./plugins/main": {
       "types": "./dist/esm/plugins/main.d.ts",
       "import": "./dist/esm/plugins/main.js",
       "require": "./dist/cjs/plugins/main.js"
+    },
+    "./plugins/plugin-player": {
+      "types": "./dist/esm/plugins/plugin-player.d.ts",
+      "import": "./dist/esm/plugins/plugin-player.js",
+      "require": "./dist/cjs/plugins/plugin-player.js"
+    },
+    "./plugins/random": {
+      "types": "./dist/esm/plugins/random/index.d.ts",
+      "import": "./dist/esm/plugins/random/index.js",
+      "require": "./dist/cjs/plugins/random/index.js"
     },
     "./reducer": {
       "types": "./dist/esm/reducer.d.ts",
@@ -109,6 +129,11 @@
       "types": "./dist/esm/testing/index.d.ts",
       "import": "./dist/esm/testing/index.js",
       "require": "./dist/cjs/testing/index.js"
+    },
+    "./turn-order": {
+      "types": "./dist/esm/turn-order.d.ts",
+      "import": "./dist/esm/turn-order.js",
+      "require": "./dist/cjs/turn-order.js"
     },
     "./util": {
       "types": "./dist/esm/util.d.ts",

@@ -6,16 +6,13 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { InitializeGame } from '..';
+import { InitializeGame, ProcessGameConfig, Stage } from '@bgio/core';
 import { Client } from '@bgio/web';
-import { MAKE_MOVE, GAME_EVENT } from '../action-types';
-import { makeMove } from '../action-creators';
-import { Step, Simulate } from './ai';
-import { RandomBot } from './random-bot';
-import { MCTSBot } from './mcts-bot';
-import type { Node } from './mcts-bot';
-import { ProcessGameConfig, Stage } from '..';
-import type { AnyFn, Game, Ctx } from '../types';
+import { MAKE_MOVE, GAME_EVENT } from '@bgio/core/action-types';
+import { makeMove } from '@bgio/core/action-creators';
+import { Step, Simulate, RandomBot, MCTSBot } from '@bgio/core/ai';
+import type { Node } from '@bgio/core/ai';
+import type { AnyFn, Game, Ctx } from '@bgio/core/types';
 
 function IsVictory(cells) {
   const positions = [

@@ -6,10 +6,10 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import PluginPlayer from './plugin-player';
-import type { PlayerAPI } from './plugin-player';
+import PluginPlayer from '@bgio/core/plugins/plugin-player';
+import type { PlayerAPI } from '@bgio/core/plugins/plugin-player';
 import { Client } from '@bgio/web';
-import type { Game } from '../types';
+import type { Game } from '@bgio/core/types';
 
 describe('default values', () => {
   test('playerState is not passed', () => {

@@ -8,8 +8,8 @@
 
 import { Client } from '@bgio/web';
 import { Local } from '@bgio/web';
-import type { Game, Plugin } from '../types';
-import { GameMethod } from '..';
+import type { Game, Plugin } from '@bgio/core/types';
+import { GameMethod } from '@bgio/core';
 
 describe('basic', () => {
   let client: ReturnType<typeof Client>;

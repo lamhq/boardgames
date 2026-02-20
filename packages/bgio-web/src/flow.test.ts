@@ -6,14 +6,14 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { makeMove, gameEvent } from './action-creators';
+import { makeMove, gameEvent } from '@bgio/core/action-creators';
 import { Client } from '@bgio/web';
-import { Flow } from './flow';
-import { TurnOrder } from './turn-order';
-import { error } from './logger';
-import type { Ctx, State, Game, PlayerID, MoveFn } from './types';
+import { Flow } from '@bgio/core/flow';
+import { TurnOrder } from '@bgio/core/turn-order';
+import { error } from '@bgio/core/logger';
+import type { Ctx, State, Game, PlayerID, MoveFn } from '@bgio/core/types';
 
-jest.mock('./logger', () => ({
+jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));

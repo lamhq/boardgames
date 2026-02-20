@@ -7,7 +7,7 @@
  */
 
 import { Client } from '@bgio/web';
-import type { Game } from '../types';
+import type { Game } from '@bgio/core/types';
 
 describe('log-metadata', () => {
   test('It sets metadata in a move and then clears the metadata', () => {

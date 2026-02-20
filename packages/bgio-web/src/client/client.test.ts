@@ -26,7 +26,7 @@ import type { Game, LogEntry, State, SyncInfo } from '@bgio/core/types';
 import type { Operation } from 'rfc6902';
 import type { TransportData } from '@bgio/core/master/master';
 
-jest.mock('../../core/logger', () => ({
+jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));

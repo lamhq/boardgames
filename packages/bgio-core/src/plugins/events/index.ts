@@ -1,9 +1,9 @@
 /*
- * Copyright 2017 The boardgame.io Authors
+ * Copyright 2018 The boardgame.io Authors
  *
  * Use of this source code is governed by a MIT-style
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  */
 
-export { Client, type BoardProps } from '../client/react';
+export { Events, type EventsAPI, type PrivateEventsAPI } from './events';

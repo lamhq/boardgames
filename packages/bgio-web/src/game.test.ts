@@ -6,13 +6,13 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { ProcessGameConfig } from './game';
+import { ProcessGameConfig } from '@bgio/core/game';
 import { Client } from '@bgio/web';
-import { error } from './logger';
-import { InitializeGame } from './initialize';
-import type { Game } from './types';
+import { error } from '@bgio/core/logger';
+import { InitializeGame } from '@bgio/core/initialize';
+import type { Game } from '@bgio/core/types';
 
-jest.mock('./logger', () => ({
+jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));

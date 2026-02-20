@@ -6,21 +6,21 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Flow } from './flow';
+import { Flow } from '@bgio/core/flow';
 import { Client } from '@bgio/web';
 import {
   UpdateTurnOrderState,
   Stage,
   TurnOrder,
   ActivePlayers,
-} from './turn-order';
-import { makeMove, gameEvent } from './action-creators';
-import { CreateGameReducer } from './reducer';
-import { InitializeGame } from './initialize';
-import { error } from './logger';
-import type { Game, State } from './types';
+} from '@bgio/core/turn-order';
+import { makeMove, gameEvent } from '@bgio/core/action-creators';
+import { CreateGameReducer } from '@bgio/core/reducer';
+import { InitializeGame } from '@bgio/core/initialize';
+import { error } from '@bgio/core/logger';
+import type { Game, State } from '@bgio/core/types';
 
-jest.mock('./logger', () => ({
+jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));
