@@ -14,7 +14,7 @@ import type { Master } from '@bgio/core/master/master';
 import { error } from '@bgio/core/logger';
 import { getFilterPlayerView } from '@bgio/core/master/filter-player-view';
 
-jest.mock('../../../core/logger', () => ({
+jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),
   error: jest.fn(),
 }));
@@ -42,7 +42,7 @@ class SocketIOTestAdapter extends SocketIO {
   }
 }
 
-jest.mock('../../../core/master/master', () => {
+jest.mock('@bgio/core/master/master', () => {
   class Master {
     onUpdate: jest.Mock<any, any>;
     onSync: jest.Mock<any, any>;

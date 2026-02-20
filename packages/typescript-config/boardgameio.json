@@ -10,7 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "skipLibCheck": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "alwaysStrict": false,
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,

@@ -19,7 +19,7 @@ const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
 beforeEach(warn.mockReset);
 afterAll(warn.mockRestore);
 
-jest.mock('../../core/logger', () => ({
+jest.mock('@bgio/core/logger', () => ({
   info: () => {},
   error: () => {},
 }));
