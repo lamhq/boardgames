@@ -10,13 +10,9 @@ defaults:
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'apps/web/**'
 
   pull_request:
     branches: [ main ]
-    paths:
-      - 'apps/web/**'
 
 permissions:
   contents: read   # Allows reading repo contents
@@ -33,10 +29,10 @@ jobs:
       uses: ./.github/actions/setup-node-env
 
     - name: Lint
-      run: pnpm lint -F web 
+      run: pnpm lint
 
-  # Unit Test
-  unit-test:
+  # Run Unit Test & E2E Test
+  test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -45,28 +41,17 @@ jobs:
     - name: Setup web environment
       uses: ./.github/actions/setup-node-env
 
-    - name: Unit Test
-      run: pnpm test -F web 
+    - name: Run Test
+      run: pnpm test
 
-  e2e-test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
-
-    - name: Setup web environment
-      uses: ./.github/actions/setup-node-env
-
-    - name: E2E Test
-      run: pnpm test -F web-e2e 
-    
-    - name: Upload test report
+    - name: Upload e2e test report
       uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
         path: apps/web-e2e/playwright-report/
         retention-days: 30
+
 
   # Build check
   build:
@@ -79,4 +64,4 @@ jobs:
       uses: ./.github/actions/setup-node-env
 
     - name: Build
-      run: pnpm build -F web
+      run: pnpm build
