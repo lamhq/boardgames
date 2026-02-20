@@ -15,7 +15,7 @@ export default function Play() {
   const playerId = searchParams.get("playerId");
 
   if (!gameId || !matchId || !playerId) {
-    return <ErrorPage message="Invalid game parameters" />;
+    return <ErrorPage message="Invalid page arguments" />;
   }
 
   const BoardGameClient = Client({
