@@ -9,6 +9,7 @@
   "dependencies": {
     "@bgio/core": "workspace:*",
     "@bgio/server": "workspace:*",
+    "@repo/games": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
@@ -21,7 +22,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
-    "@libs/typescript-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",

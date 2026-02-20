@@ -2,20 +2,8 @@ import type { Game, Move } from '@bgio/core';
 import { INVALID_MOVE } from '@bgio/core';
 
 export interface TicTacToeGameState {
-  cells: (string | null)[];
+  cells: Array<string | null>;
 }
-
-// Define the game moves
-const clickCell: Move<TicTacToeGameState> = ({ G, playerID }, id: number) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  if (G.cells[id] !== null) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return INVALID_MOVE;
-  }
-  // eslint-disable
-  G.cells[id] = playerID;
-  return undefined;
-};
 
 // Return true if `cells` is in a winning configuration.
 function IsVictory(cells: Array<string | null>): boolean {
@@ -53,7 +41,13 @@ export const TicTacToeGame: Game<TicTacToeGameState> = {
   },
 
   moves: {
-    clickCell,
+    clickCell: ({ G, playerID }, id: number) => {
+      if (G.cells[id] !== null) {
+        return INVALID_MOVE;
+      }
+      G.cells[id] = playerID;
+      return undefined;
+    },
   },
 
   turn: {

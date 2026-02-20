@@ -1,5 +1,5 @@
 import { createApiGatewayWsHandler } from '@bgio/server';
-import { TicTacToeGame } from './tic-tac-toe';
+import { TicTacToeGame } from '@repo/games';
 
 /**
  * Export the configured handler for AWS Lambda

@@ -1,0 +1,16 @@
+{
+  "name": "@repo/games",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "pnpm build:esm && pnpm build:cjs",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@bgio/core": "workspace:*",
+    "@repo/typescript-config": "workspace:*"
+  }
+}

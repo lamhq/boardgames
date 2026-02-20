@@ -35,6 +35,9 @@ importers:
       '@nestjs/platform-express':
         specifier: ^11.0.1
         version: 11.1.13(@nestjs/common@11.1.13(class-transformer@0.5.1)(class-validator@0.14.3)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.13)
+      '@repo/games':
+        specifier: workspace:*
+        version: link:../../packages/games
       aws-lambda:
         specifier: ^1.0.7
         version: 1.0.7
@@ -57,9 +60,6 @@ importers:
       '@eslint/js':
         specifier: ^9.18.0
         version: 9.39.2
-      '@libs/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
       '@nestjs/cli':
         specifier: ^11.0.0
         version: 11.0.16(@swc/core@1.15.11)(@types/node@22.19.10)(esbuild@0.27.3)
@@ -69,6 +69,9 @@ importers:
       '@nestjs/testing':
         specifier: ^11.0.1
         version: 11.1.13(@nestjs/common@11.1.13(class-transformer@0.5.1)(class-validator@0.14.3)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.13)(@nestjs/platform-express@11.1.13)
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
       '@types/aws-lambda':
         specifier: ^8.10.160
         version: 8.10.160
@@ -137,6 +140,9 @@ importers:
       '@bgio/web':
         specifier: workspace:*
         version: link:../../packages/bgio-web
+      '@repo/games':
+        specifier: workspace:*
+        version: link:../../packages/games
       react:
         specifier: ^19.2.4
         version: 19.2.4
@@ -153,10 +159,10 @@ importers:
         specifier: ^7.13.0
         version: 7.13.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
     devDependencies:
-      '@libs/eslint-config':
+      '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@libs/typescript-config':
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@tailwindcss/vite':
@@ -220,7 +226,7 @@ importers:
         specifier: ^6.3.6
         version: 6.3.6
     devDependencies:
-      '@libs/typescript-config':
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/jest':
@@ -247,9 +253,6 @@ importers:
 
   packages/bgio-server:
     dependencies:
-      '@bgio/core':
-        specifier: workspace:*
-        version: link:../bgio-core
       '@koa/cors':
         specifier: ^3.1.0
         version: 3.4.3
@@ -281,7 +284,10 @@ importers:
         specifier: ^4.5.0
         version: 4.8.3
     devDependencies:
-      '@libs/typescript-config':
+      '@bgio/core':
+        specifier: workspace:*
+        version: link:../bgio-core
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/aws-lambda':
@@ -342,7 +348,7 @@ importers:
       '@bgio/core':
         specifier: workspace:*
         version: link:../bgio-core
-      '@libs/typescript-config':
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@testing-library/jest-dom':
@@ -396,6 +402,15 @@ importers:
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.2(jiti@2.6.1))
+
+  packages/games:
+    devDependencies:
+      '@bgio/core':
+        specifier: workspace:*
+        version: link:../bgio-core
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
 
   packages/typescript-config: {}
 

@@ -11,6 +11,7 @@
   "dependencies": {
     "@bgio/web": "workspace:*",
     "@bgio/core": "workspace:*",
+    "@repo/games": "workspace:*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hook-form": "^7.71.1",
@@ -18,8 +19,8 @@
     "react-router": "^7.13.0"
   },
   "devDependencies": {
-    "@libs/eslint-config": "workspace:*",
-    "@libs/typescript-config": "workspace:*",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@tailwindcss/vite": "^4.0.0",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",

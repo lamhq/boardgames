@@ -1,5 +1,5 @@
 {
-  "extends": "@libs/typescript-config/boardgameio.json",
+  "extends": "@repo/typescript-config/boardgameio.json",
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "bundler",

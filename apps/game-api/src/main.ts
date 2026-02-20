@@ -1,5 +1,5 @@
 import { Server, Origins } from '@bgio/server';
-import { TicTacToeGame } from './tic-tac-toe';
+import { TicTacToeGame } from '@repo/games';
 
 const server = Server({
   games: [TicTacToeGame],
