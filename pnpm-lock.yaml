@@ -323,9 +323,6 @@ importers:
 
   packages/bgio-web:
     dependencies:
-      '@bgio/core':
-        specifier: workspace:*
-        version: link:../bgio-core
       nanoid:
         specifier: ^3.1.30
         version: 3.3.11
@@ -345,6 +342,9 @@ importers:
         specifier: ^4.1.3
         version: 4.1.3
     devDependencies:
+      '@bgio/core':
+        specifier: workspace:*
+        version: link:../bgio-core
       '@libs/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

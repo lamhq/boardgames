@@ -7,7 +7,7 @@
  */
 
 import { Flow } from './flow';
-import { Client } from '@bgio/client';
+import { Client } from '@bgio/web';
 import {
   UpdateTurnOrderState,
   Stage,

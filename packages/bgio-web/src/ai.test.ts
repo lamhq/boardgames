@@ -7,7 +7,7 @@
  */
 
 import { InitializeGame } from '..';
-import { Client } from '@bgio/client';
+import { Client } from '@bgio/web';
 import { MAKE_MOVE, GAME_EVENT } from '../action-types';
 import { makeMove } from '../action-creators';
 import { Step, Simulate } from './ai';

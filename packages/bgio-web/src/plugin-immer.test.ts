@@ -6,8 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '@bgio/client';
-import type { _ClientImpl } from '@bgio/client';
+import { Client } from '@bgio/web';
+import type { _ClientImpl } from '@bgio/web';
 import { INVALID_MOVE } from '..';
 
 // Surpress invalid move error logging

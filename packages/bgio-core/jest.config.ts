@@ -9,7 +9,7 @@ export default {
   coverageDirectory: "../coverage",
   testEnvironment: "node",
   moduleNameMapper: {
-    "^@bgio/client$": "<rootDir>/../../bgio-client/src/client",
-    "^@bgio/client/(.*)$": "<rootDir>/../../bgio-client/src/$1",
+    "^@bgio/web$": "<rootDir>/../../bgio-web/src/client",
+    "^@bgio/web/(.*)$": "<rootDir>/../../bgio-web/src/$1",
   },
 };

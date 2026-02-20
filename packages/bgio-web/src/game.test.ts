@@ -7,7 +7,7 @@
  */
 
 import { ProcessGameConfig } from './game';
-import { Client } from '@bgio/client';
+import { Client } from '@bgio/web';
 import { error } from './logger';
 import { InitializeGame } from './initialize';
 import type { Game } from './types';

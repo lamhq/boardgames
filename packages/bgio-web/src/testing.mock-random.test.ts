@@ -1,4 +1,4 @@
-import { Client } from '@bgio/client';
+import { Client } from '@bgio/web';
 import type { Game } from '../types';
 import { MockRandom } from './mock-random';
 

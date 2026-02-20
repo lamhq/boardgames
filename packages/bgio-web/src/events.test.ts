@@ -7,7 +7,7 @@
  */
 
 import { Events } from './events';
-import { Client } from '@bgio/client';
+import { Client } from '@bgio/web';
 import { error } from '../../logger';
 import type { Game, Ctx } from '../../types';
 

@@ -26,7 +26,6 @@
     }
   },
   "dependencies": {
-    "@bgio/core": "workspace:*",
     "nanoid": "^3.1.30",
     "react-cookies": "^0.1.0",
     "redux": "^4.1.0",
@@ -39,6 +38,7 @@
     "react-dom": "^19.2.4"
   },
   "devDependencies": {
+    "@bgio/core": "workspace:*",
     "@libs/typescript-config": "workspace:*",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/enzyme": "^3.10.19",

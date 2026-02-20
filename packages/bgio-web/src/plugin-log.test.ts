@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '@bgio/client';
+import { Client } from '@bgio/web';
 import type { Game } from '../types';
 
 describe('log-metadata', () => {

@@ -10,7 +10,7 @@ import { Random } from './random';
 import { makeMove } from '../../action-creators';
 import { CreateGameReducer } from '../../reducer';
 import { InitializeGame } from '../../initialize';
-import { Client } from '@bgio/client';
+import { Client } from '@bgio/web';
 import type { Game } from '../../types';
 import { PlayerView } from '../main';
 

@@ -6,8 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '@bgio/client';
-import { Local } from '@bgio/client';
+import { Client } from '@bgio/web';
+import { Local } from '@bgio/web';
 import type { Game, Plugin } from '../types';
 import { GameMethod } from '..';
 

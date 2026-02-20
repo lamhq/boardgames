@@ -7,7 +7,7 @@
  */
 
 import { makeMove, gameEvent } from './action-creators';
-import { Client } from '@bgio/client';
+import { Client } from '@bgio/web';
 import { Flow } from './flow';
 import { TurnOrder } from './turn-order';
 import { error } from './logger';
