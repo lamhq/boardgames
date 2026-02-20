@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 /*
  * Copyright 2017 The boardgame.io Authors
  *

@@ -7,9 +7,10 @@ export default {
   },
   collectCoverageFrom: ["**/*.(t|j)s"],
   coverageDirectory: "../coverage",
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/../jest.setup.ts"],
   moduleNameMapper: {
+    "^nanoid$": "nanoid/non-secure",
     "^@bgio/core$": "<rootDir>/../../bgio-core/src",
     "^@bgio/core/(.*)$": "<rootDir>/../../bgio-core/src/$1",
     "^@bgio/web$": "<rootDir>/client",
