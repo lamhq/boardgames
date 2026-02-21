@@ -7,11 +7,11 @@
  */
 
 export { Server, createServerRunConfig, getPortFromServer } from './server';
-export type { KoaServer, ServerConfig, HttpsOptions, ServerOpts } from './types';
+export type { HttpsOptions, KoaServer, ServerConfig, ServerOpts } from './types';
 
 // Re-export commonly used auxiliary exports
-export { Origins } from './cors';
-export { SocketIO } from './transport/socketio';
-export { GenericPubSub } from './transport/pubsub/generic-pub-sub';
-export { FlatFile, InMemory } from './db';
 export { createApiGatewayWsHandler } from './api-gateway-ws-handler';
+export { Origins } from './cors';
+export { FlatFile, InMemory } from './db';
+export { type GenericPubSub } from './transport/pubsub/generic-pub-sub';
+export { SocketIO } from './transport/socketio';
