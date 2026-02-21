@@ -1,0 +1,86 @@
+name: PR Checks
+
+env:
+  BUILD_OUTPUT_PATH: apps/web/dist/
+
+defaults:
+  run:
+    working-directory: .
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read # Allows reading repo contents
+
+jobs:
+  # Lint check
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup node environment
+        uses: ./.github/actions/setup-node-env
+
+      - name: Lint
+        run: pnpm lint
+
+  # Run Unit Test & E2E Test
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # filter names correspond to workspace package names (or folder aliases)
+        package:
+          [
+            web,
+            web-e2e,
+            game-api,
+            '@bgio/core',
+            '@bgio/server',
+            '@bgio/web',
+            '@repo/games',
+          ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup node environment
+        uses: ./.github/actions/setup-node-env
+
+      - name: Install Playwright browsers
+        if: ${{ matrix.package == 'web-e2e' }}
+        run: pnpm exec playwright install chromium
+        shell: bash
+        working-directory: apps/web-e2e
+
+      - name: Run tests for ${{ matrix.package }}
+        run: pnpm test -F "${{ matrix.package }}"
+        shell: bash
+
+      - name: Upload e2e test report
+        if: ${{ matrix.package == 'web-e2e' && !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/web-e2e/playwright-report/
+          retention-days: 30
+
+  # Build check
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup node environment
+        uses: ./.github/actions/setup-node-env
+
+      - name: Build
+        run: pnpm build

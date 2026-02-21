@@ -1,16 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { createGameServer } from './game.server';
+import { Server, Origins } from '@bgio/server';
+import { TicTacToeGame } from '@repo/games';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+const server = Server({
+  games: [TicTacToeGame],
+  origins: [Origins.LOCALHOST],
+});
 
-  // Start the boardgame.io multiplayer server
-  const gameServer = createGameServer();
-  await gameServer.run(8000, () => {
-    console.log('Multiplayer server running on port 8000');
-  });
-}
+const PORT = process.env.PORT || 8000;
 
-void bootstrap();
+void server.run(Number(PORT), () => {
+  console.log(`Game server running on port ${PORT}`);
+});

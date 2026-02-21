@@ -1,13 +1,25 @@
 {
-  "$schema": "https://turborepo.dev/schema.json",
+  "$schema": "node_modules/turbo/schema.json",
   "tasks": {
+    "lint": {
+      "dependsOn": ["^build"],
+      "cache": false
+    },
+    "test": {
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**"]
     },
-    "lint": {},
     "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "web#dev": {
+      "with": ["game-api#dev"],
       "cache": false,
       "persistent": true
     }

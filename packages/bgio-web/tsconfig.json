@@ -1,0 +1,11 @@
+{
+  "extends": "@repo/typescript-config/boardgameio.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["ESNext", "DOM"],
+    "types": ["node", "jest", "react", "react-dom", "@testing-library/jest-dom"],
+    "jsx": "react-jsx"
+  },
+  "include": ["src"]
+}

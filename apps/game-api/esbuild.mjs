@@ -1,9 +1,9 @@
-import * as esbuild from 'esbuild'
+import * as esbuild from 'esbuild';
 import { clean } from 'esbuild-plugin-clean';
 
 await esbuild.build({
-  entryPoints: ['./dist/lambda-handler.js'],
-  outfile: './build/game-handler.mjs',
+  entryPoints: ['./src/lambda-handler.ts'],
+  outfile: './dist/game-handler.mjs',
   sourcemap: true,
   platform: 'node',
   target: 'node24',
@@ -19,9 +19,9 @@ await esbuild.build({
   ],
   plugins: [
     clean({
-      patterns: ['./build/*'],
+      patterns: ['./dist/*'],
     }),
   ],
 })
 
-console.log('Build complete: build/game-handler.mjs')
+console.log('Build complete: dist/game-handler.mjs')

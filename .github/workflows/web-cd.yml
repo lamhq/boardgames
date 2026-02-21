@@ -1,4 +1,4 @@
-name: Web Deploy
+name: Deploy Web
 
 # Required CI Variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
 # - CI_ROLE_ARN: AWS IAM role ARN for OIDC authentication
@@ -15,33 +15,32 @@ defaults:
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'apps/web/**'
 
 permissions:
-  id-token: write  # Allows OIDC token requests
-  contents: read   # Allows reading repo contents
+  id-token: write # Allows OIDC token requests
+  contents: read # Allows reading repo contents
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-    - name: Setup web environment
-      uses: ./.github/actions/setup-web
+      - name: Setup node environment
+        uses: ./.github/actions/setup-node-env
 
-    - name: Build application
-      run: pnpm --filter web build
+      - name: Build application
+        run: pnpm build -F web
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-output
-        path: ${{ env.BUILD_OUTPUT_PATH }}
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: ${{ env.BUILD_OUTPUT_PATH }}
 
   deploy:
     needs: build
@@ -49,27 +48,27 @@ jobs:
     environment: dev
 
     steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: build-output
-        path: ${{ env.BUILD_OUTPUT_PATH }}
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: ${{ env.BUILD_OUTPUT_PATH }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v6
-      with:
-        role-to-assume: ${{ vars.CI_ROLE_ARN }}
-        aws-region: ${{ vars.AWS_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.CI_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
 
-    - name: Sync build to S3
-      run: |
-        aws s3 sync ${{ env.BUILD_OUTPUT_PATH }} s3://${{ vars.AWS_S3_BUCKET }}/build \
-          --delete \
-          --region ${{ vars.AWS_REGION }}
+      - name: Sync build to S3
+        run: |
+          aws s3 sync ${{ env.BUILD_OUTPUT_PATH }} s3://${{ vars.AWS_S3_BUCKET }}/build \
+            --delete \
+            --region ${{ vars.AWS_REGION }}
 
-    - name: Invalidate CloudFront cache
-      run: |
-        aws cloudfront create-invalidation \
-          --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
-          --paths "/index.html" \
-          --region ${{ vars.AWS_REGION }}
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/index.html" \
+            --region ${{ vars.AWS_REGION }}

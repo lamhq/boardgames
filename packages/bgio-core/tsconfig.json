@@ -1,0 +1,10 @@
+{
+  "extends": "@repo/typescript-config/boardgameio.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "lib": ["ESNext"],
+    "types": ["node", "jest"]
+  },
+  "include": ["src"]
+}

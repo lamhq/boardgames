@@ -1,0 +1,28 @@
+# Node dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+coverage-*
+
+# Turborepo / caches
+.turbo/
+.cache/
+
+# Environment / logs
+.env
+.env.*.local
+npm-debug.log*
+pnpm-debug.log*
+*.log
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
