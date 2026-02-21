@@ -36,8 +36,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install dependencies
+      - name: Build
         run: pnpm build
 
       - name: Lint
-        run: pnpm lint -F @repo/games
+        run: pnpm lint
