@@ -7,7 +7,7 @@
     "init": "terraform init -backend-config=backend.tfvars -reconfigure -upgrade && terraform workspace new dev && terraform workspace select dev",
     "plan": "terraform plan -var-file=\"params.tfvars\"",
     "apply": "terraform apply -var-file=\"params.tfvars\" --auto-approve",
-    "destroy": "terraform destroy -var-file=\"params.tfvars\"",
+    "output": "terraform output",
     "format": "terraform fmt -recursive",
     "validate": "terraform validate"
   }
