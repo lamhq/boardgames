@@ -229,6 +229,9 @@ importers:
 
   packages/bgio-server:
     dependencies:
+      '@bgio/core':
+        specifier: workspace:*
+        version: link:../bgio-core
       '@koa/cors':
         specifier: ^3.1.0
         version: 3.4.3
@@ -260,9 +263,6 @@ importers:
         specifier: ^4.5.0
         version: 4.8.3
     devDependencies:
-      '@bgio/core':
-        specifier: workspace:*
-        version: link:../bgio-core
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -380,13 +380,14 @@ importers:
         version: 10.1.8(eslint@9.39.2(jiti@2.6.1))
 
   packages/games:
-    devDependencies:
+    dependencies:
       '@bgio/core':
         specifier: workspace:*
         version: link:../bgio-core
       '@bgio/web':
         specifier: workspace:*
         version: link:../bgio-web
+    devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
