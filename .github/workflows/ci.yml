@@ -31,6 +31,10 @@ jobs:
       # - name: Build
       #   run: pnpm build
 
+      - name: List dist
+        run: ls dist
+        working-directory: packages/bgio-web
+
       - name: Lint
         run: pnpm lint
         working-directory: packages/bgio-web
