@@ -6,10 +6,10 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Events } from '@bgio/core/plugins/events';
-import { Client } from '@bgio/web';
 import { error } from '@bgio/core/logger';
-import type { Game, Ctx } from '@bgio/core/types';
+import { Events } from '@bgio/core/plugins/events';
+import type { Ctx, Game } from '@bgio/core/types';
+import { Client } from './client';
 
 jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),

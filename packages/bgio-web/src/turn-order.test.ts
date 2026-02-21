@@ -6,19 +6,19 @@
  * https://opensource.org/licenses/MIT.
  */
 
+import { gameEvent, makeMove } from '@bgio/core/action-creators';
 import { Flow } from '@bgio/core/flow';
-import { Client } from '@bgio/web';
-import {
-  UpdateTurnOrderState,
-  Stage,
-  TurnOrder,
-  ActivePlayers,
-} from '@bgio/core/turn-order';
-import { makeMove, gameEvent } from '@bgio/core/action-creators';
-import { CreateGameReducer } from '@bgio/core/reducer';
 import { InitializeGame } from '@bgio/core/initialize';
 import { error } from '@bgio/core/logger';
+import { CreateGameReducer } from '@bgio/core/reducer';
+import {
+  ActivePlayers,
+  Stage,
+  TurnOrder,
+  UpdateTurnOrderState,
+} from '@bgio/core/turn-order';
 import type { Game, State } from '@bgio/core/types';
+import { Client } from './client';
 
 jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),
@@ -369,7 +369,7 @@ describe('setActivePlayers', () => {
   test('basic', () => {
     const newState = flow.processEvent(
       state,
-      gameEvent('setActivePlayers', [{ value: { '1': Stage.NULL } }])
+      gameEvent('setActivePlayers', [{ value: { '1': Stage.NULL } }]),
     );
     expect(newState.ctx.activePlayers).toMatchObject({ '1': Stage.NULL });
   });
@@ -377,7 +377,7 @@ describe('setActivePlayers', () => {
   test('short form', () => {
     const newState = flow.processEvent(
       state,
-      gameEvent('setActivePlayers', [['1', '2']])
+      gameEvent('setActivePlayers', [['1', '2']]),
     );
     expect(newState.ctx.activePlayers).toMatchObject({
       '1': Stage.NULL,
@@ -397,7 +397,7 @@ describe('setActivePlayers', () => {
             },
           },
         },
-      ])
+      ]),
     );
     expect(newState.ctx.activePlayers).toBeNull();
   });
@@ -405,7 +405,7 @@ describe('setActivePlayers', () => {
   test('all', () => {
     const newState = flow.processEvent(
       state,
-      gameEvent('setActivePlayers', [{ all: Stage.NULL }])
+      gameEvent('setActivePlayers', [{ all: Stage.NULL }]),
     );
     expect(newState.ctx.activePlayers).toMatchObject({
       '0': Stage.NULL,
@@ -1051,7 +1051,7 @@ describe('UpdateTurnOrderState', () => {
     const { ctx: t } = UpdateTurnOrderState(
       { G, ctx } as State,
       ctx.currentPlayer,
-      turn
+      turn,
     );
     expect(t).toMatchObject({ currentPlayer: '1' });
   });
@@ -1063,7 +1063,7 @@ describe('UpdateTurnOrderState', () => {
       turn,
       {
         next: '2',
-      }
+      },
     );
     expect(t).toMatchObject({ currentPlayer: '2' });
   });
@@ -1076,7 +1076,7 @@ describe('UpdateTurnOrderState', () => {
       },
     });
     expect(error).toHaveBeenCalledWith(
-      `invalid value returned by turn.order.next — expected number or undefined got string “2”.`
+      `invalid value returned by turn.order.next — expected number or undefined got string “2”.`,
     );
   });
 });

@@ -6,13 +6,13 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Random } from '@bgio/core/plugins/random';
 import { makeMove } from '@bgio/core/action-creators';
-import { CreateGameReducer } from '@bgio/core/reducer';
 import { InitializeGame } from '@bgio/core/initialize';
-import { Client } from '@bgio/web';
-import type { Game } from '@bgio/core/types';
 import { PlayerView } from '@bgio/core/plugins/main';
+import { Random } from '@bgio/core/plugins/random';
+import { CreateGameReducer } from '@bgio/core/reducer';
+import type { Game } from '@bgio/core/types';
+import { Client } from './client';
 
 function Init(seed) {
   return new Random({ seed });

@@ -1,6 +1,6 @@
-import { Client } from '@bgio/web';
-import type { Game } from '@bgio/core/types';
 import { MockRandom } from '@bgio/core/testing';
+import type { Game } from '@bgio/core/types';
+import { Client } from './client';
 
 test('it creates a plugin object', () => {
   const plugin = MockRandom();

@@ -6,8 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '@bgio/web';
 import type { Game } from '@bgio/core/types';
+import { Client } from './client';
 
 describe('log-metadata', () => {
   test('It sets metadata in a move and then clears the metadata', () => {

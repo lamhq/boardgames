@@ -7,10 +7,10 @@
  */
 
 import { ProcessGameConfig } from '@bgio/core/game';
-import { Client } from '@bgio/web';
-import { error } from '@bgio/core/logger';
 import { InitializeGame } from '@bgio/core/initialize';
+import { error } from '@bgio/core/logger';
 import type { Game } from '@bgio/core/types';
+import { Client } from './client';
 
 jest.mock('@bgio/core/logger', () => ({
   info: jest.fn(),
@@ -59,7 +59,7 @@ describe('basic', () => {
 
   test('long-form move syntax', () => {
     expect(
-      game.processMove({ ctx: { phase: '' }, plugins: {} }, { type: 'C' })
+      game.processMove({ ctx: { phase: '' }, plugins: {} }, { type: 'C' }),
     ).toEqual('C');
   });
 });
@@ -262,7 +262,7 @@ describe('config errors', () => {
     const state = InitializeGame({ game });
     game.processMove(state, { type: 'A', args: null, playerID: '0' });
     expect(error).toHaveBeenCalledWith(
-      expect.stringContaining('invalid move object')
+      expect.stringContaining('invalid move object'),
     );
   });
 });
