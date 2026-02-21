@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-export { Client } from './client';
+export { Client, type ClientOpts } from './client';
 export type { _ClientImpl } from './client';
-export { Local, SocketIO, NativeWebSocket } from './transport';
+export { Local, NativeWebSocket, SocketIO } from './transport';
 export type { Transport, TransportOpts } from './transport/transport';

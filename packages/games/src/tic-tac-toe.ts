@@ -1,4 +1,4 @@
-import type { Game, Move } from '@bgio/core';
+import type { Game } from '@bgio/core';
 import { INVALID_MOVE } from '@bgio/core';
 
 export interface TicTacToeGameState {
