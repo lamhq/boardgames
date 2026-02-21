@@ -1,15 +1,24 @@
 {
   "$schema": "node_modules/turbo/schema.json",
   "tasks": {
+    "lint": {
+      "cache": false
+    },
+    "test": {
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**"]
     },
-    "lint": {},
-    "test": {},
     "dev": {
       "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "web#dev": {
+      "with": ["game-api#dev"],
       "cache": false,
       "persistent": true
     }

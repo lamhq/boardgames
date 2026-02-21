@@ -9,9 +9,11 @@
     "build": "pnpm build:esm && pnpm build:cjs",
     "test": "jest"
   },
-  "devDependencies": {
+  "peerDependencies": {
     "@bgio/core": "workspace:*",
-    "@bgio/web": "workspace:*",
+    "@bgio/web": "workspace:*"
+  },
+  "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
