@@ -32,7 +32,8 @@ jobs:
       #   run: pnpm build
 
       - name: Lint
-        run: pnpm lint -F @bgio/web
+        run: pnpm lint
+        working-directory: packages/bgio-web
 
   # Run Unit Test & E2E Test
   test:
