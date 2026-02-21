@@ -1,4 +1,4 @@
-name: Web Deploy
+name: Deploy Web
 
 # Required CI Variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
 # - CI_ROLE_ARN: AWS IAM role ARN for OIDC authentication

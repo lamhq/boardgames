@@ -1,4 +1,4 @@
-name: Game API Deploy
+name: Deploy Game API
 
 # Required CI Variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
 # - CI_ROLE_ARN: AWS IAM role ARN for OIDC authentication
@@ -6,7 +6,7 @@ name: Game API Deploy
 # - GAME_HANDLER_LAMBDA: Lambda function name to deploy
 
 env:
-  BUILD_OUTPUT_PATH: apps/game-api/build/
+  BUILD_OUTPUT_PATH: apps/game-api/dist/
 
 defaults:
   run:
@@ -14,40 +14,39 @@ defaults:
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'apps/game-api/**'
 
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'apps/game-api/**'
       - '.github/workflows/*'
 
 permissions:
-  id-token: write  # Allows OIDC token requests
-  contents: read   # Allows reading repo contents
+  id-token: write # Allows OIDC token requests
+  contents: read # Allows reading repo contents
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-    - name: Setup Node environment
-      uses: ./.github/actions/setup-node-env
+      - name: Setup Node environment
+        uses: ./.github/actions/setup-node-env
 
-    - name: Build game-api
-      working-directory: apps/game-api
-      run: pnpm build --filter=game-api
+      - name: Build game-api
+        working-directory: apps/game-api
+        run: pnpm build -F game-api
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: game-api-build
-        path: ${{ env.BUILD_OUTPUT_PATH }}
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-api-build
+          path: ${{ env.BUILD_OUTPUT_PATH }}
 
   deploy:
     needs: build
@@ -55,31 +54,31 @@ jobs:
     environment: dev
 
     steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: game-api-build
-        path: ${{ env.BUILD_OUTPUT_PATH }}
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: game-api-build
+          path: ${{ env.BUILD_OUTPUT_PATH }}
 
-    - name: Create Lambda deployment package
-      run: |
-        cd ${{ env.BUILD_OUTPUT_PATH }} && zip -r ../../../game-handler.zip .
+      - name: Create Lambda deployment package
+        run: |
+          cd ${{ env.BUILD_OUTPUT_PATH }} && zip -r ../../../game-handler.zip .
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v6
-      with:
-        role-to-assume: ${{ vars.CI_ROLE_ARN }}
-        aws-region: ${{ vars.AWS_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.CI_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
 
-    - name: Deploy to Lambda
-      run: |
-        aws lambda update-function-code \
-          --function-name ${{ vars.GAME_HANDLER_LAMBDA }} \
-          --zip-file fileb://game-handler.zip \
-          --region ${{ vars.AWS_REGION }}
+      - name: Deploy to Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ vars.GAME_HANDLER_LAMBDA }} \
+            --zip-file fileb://game-handler.zip \
+            --region ${{ vars.AWS_REGION }}
 
-    - name: Wait for Lambda update
-      run: |
-        aws lambda wait function-updated \
-          --function-name ${{ vars.GAME_HANDLER_LAMBDA }} \
-          --region ${{ vars.AWS_REGION }}
+      - name: Wait for Lambda update
+        run: |
+          aws lambda wait function-updated \
+            --function-name ${{ vars.GAME_HANDLER_LAMBDA }} \
+            --region ${{ vars.AWS_REGION }}
