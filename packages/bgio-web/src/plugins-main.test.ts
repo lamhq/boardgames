@@ -6,10 +6,9 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '@bgio/web';
-import { Local } from '@bgio/web';
-import type { Game, Plugin } from '@bgio/core/types';
 import { GameMethod } from '@bgio/core';
+import type { Game, Plugin } from '@bgio/core/types';
+import { Client, Local } from './client';
 
 describe('basic', () => {
   let client: ReturnType<typeof Client>;

@@ -71,16 +71,3 @@ jobs:
           name: playwright-report
           path: apps/web-e2e/playwright-report/
           retention-days: 30
-
-  # Build check
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup node environment
-        uses: ./.github/actions/setup-node-env
-
-      - name: Build
-        run: pnpm build

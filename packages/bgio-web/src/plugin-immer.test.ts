@@ -6,9 +6,9 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Client } from '@bgio/web';
-import type { _ClientImpl } from '@bgio/web';
 import { INVALID_MOVE } from '@bgio/core';
+import type { _ClientImpl } from './client';
+import { Client } from './client';
 
 // Surpress invalid move error logging
 jest.mock('@bgio/core/logger');

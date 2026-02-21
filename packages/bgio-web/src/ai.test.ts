@@ -7,12 +7,12 @@
  */
 
 import { InitializeGame, ProcessGameConfig, Stage } from '@bgio/core';
-import { Client } from '@bgio/web';
-import { MAKE_MOVE, GAME_EVENT } from '@bgio/core/action-types';
 import { makeMove } from '@bgio/core/action-creators';
-import { Step, Simulate, RandomBot, MCTSBot } from '@bgio/core/ai';
+import { GAME_EVENT, MAKE_MOVE } from '@bgio/core/action-types';
 import type { Node } from '@bgio/core/ai';
-import type { AnyFn, Game, Ctx } from '@bgio/core/types';
+import { MCTSBot, RandomBot, Simulate, Step } from '@bgio/core/ai';
+import type { AnyFn, Ctx, Game } from '@bgio/core/types';
+import { Client } from './client';
 
 function IsVictory(cells) {
   const positions = [
@@ -205,25 +205,19 @@ describe('Bot', () => {
   test('enumerate - makeMove', () => {
     const enumerate = () => [makeMove('move')];
     const b = new RandomBot({ enumerate });
-    expect(b.enumerate(undefined, undefined, undefined)[0].type).toBe(
-      MAKE_MOVE
-    );
+    expect(b.enumerate(undefined, undefined, undefined)[0].type).toBe(MAKE_MOVE);
   });
 
   test('enumerate - translate to makeMove', () => {
     const enumerate = () => [{ move: 'move' }];
     const b = new RandomBot({ enumerate });
-    expect(b.enumerate(undefined, undefined, undefined)[0].type).toBe(
-      MAKE_MOVE
-    );
+    expect(b.enumerate(undefined, undefined, undefined)[0].type).toBe(MAKE_MOVE);
   });
 
   test('enumerate - translate to gameEvent', () => {
     const enumerate = () => [{ event: 'endTurn' }];
     const b = new RandomBot({ enumerate });
-    expect(b.enumerate(undefined, undefined, undefined)[0].type).toBe(
-      GAME_EVENT
-    );
+    expect(b.enumerate(undefined, undefined, undefined)[0].type).toBe(GAME_EVENT);
   });
 
   test('enumerate - unrecognized', () => {
@@ -398,32 +392,24 @@ describe('MCTSBot', () => {
         playoutDepth: (G, ctx) => ctx.turn * 10,
       });
 
-      expect(
-        (bot.iterations as AnyFn)(null, { turn } as Ctx, currentPlayer)
-      ).toBe(turn * 100);
-      expect(
-        (bot.playoutDepth as AnyFn)(null, { turn } as Ctx, currentPlayer)
-      ).toBe(turn * 10);
+      expect((bot.iterations as AnyFn)(null, { turn } as Ctx, currentPlayer)).toBe(
+        turn * 100,
+      );
+      expect((bot.playoutDepth as AnyFn)(null, { turn } as Ctx, currentPlayer)).toBe(
+        turn * 10,
+      );
 
       // try the playout() function which requests the playoutDepth value
       bot.playout({ state } as Node);
 
-      expect(enumerateSpy).toHaveBeenCalledWith(
-        state.G,
-        state.ctx,
-        currentPlayer
-      );
+      expect(enumerateSpy).toHaveBeenCalledWith(state.G, state.ctx, currentPlayer);
 
       // then try the play() function which requests the iterations value
       enumerateSpy.mockClear();
 
       bot.play(state, currentPlayer);
 
-      expect(enumerateSpy).toHaveBeenCalledWith(
-        state.G,
-        state.ctx,
-        currentPlayer
-      );
+      expect(enumerateSpy).toHaveBeenCalledWith(state.G, state.ctx, currentPlayer);
     });
   });
 });

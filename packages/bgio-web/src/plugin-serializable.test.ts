@@ -1,5 +1,5 @@
-import { Client } from '@bgio/web';
 import type { Game } from '@bgio/core/types';
+import { Client } from './client';
 
 describe('plugin-serializable', () => {
   let client: ReturnType<typeof Client>;
