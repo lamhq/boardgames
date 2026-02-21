@@ -34,6 +34,19 @@ jobs:
   # Run Unit Test & E2E Test
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # filter names correspond to workspace package names (or folder aliases)
+        package:
+          [
+            web,
+            web-e2e,
+            game-api,
+            '@bgio/core',
+            '@bgio/server',
+            '@bgio/web',
+            '@repo/games',
+          ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -41,12 +54,13 @@ jobs:
       - name: Setup node environment
         uses: ./.github/actions/setup-node-env
 
-      - name: Run Test
-        run: pnpm test
+      - name: Run tests for ${{ matrix.package }}
+        run: pnpm test -F "${{ matrix.package }}"
 
+      # Only upload the Playwright report when running the web-e2e package
       - name: Upload e2e test report
+        if: ${{ matrix.package == 'web-e2e' && !cancelled() }}
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: apps/web-e2e/playwright-report/
