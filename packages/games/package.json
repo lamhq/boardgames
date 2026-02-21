@@ -9,7 +9,7 @@
     "build": "pnpm build:esm && pnpm build:cjs",
     "test": "jest"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@bgio/core": "workspace:*",
     "@bgio/web": "workspace:*"
   },
