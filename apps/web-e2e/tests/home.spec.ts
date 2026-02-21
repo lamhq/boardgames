@@ -1,11 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Home Page', () => {
   test('should display the home page with welcome message', async ({ page }) => {
     await page.goto('/');
 
     // Check for welcome heading
-    await expect(page.getByRole('heading', { name: /Welcome to Board Games/i })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: /Welcome to Board Games/i }),
+    ).toBeVisible();
   });
 
   test('should display Tic-Tac-Toe game card', async ({ page }) => {
@@ -15,22 +17,26 @@ test.describe('Home Page', () => {
     await expect(page.getByRole('heading', { name: /Tic-Tac-Toe/i })).toBeVisible();
 
     // Check for game description
-    await expect(page.getByText(/Classic strategy game for two players/i)).toBeVisible();
+    await expect(
+      page.getByText(/Classic strategy game for two players/i),
+    ).toBeVisible();
   });
 
   test('should have a Play button for the game card', async ({ page }) => {
     await page.goto('/');
 
     // Check that the Play button exists
-    const playButton = page.getByRole('button', { name: /Play/i }).first();
+    const playButton = page.getByRole('link', { name: /Play/i }).first();
     await expect(playButton).toBeVisible();
   });
 
-  test('clicking Play button should navigate to game page with game id in URL', async ({ page }) => {
+  test('clicking Play button should navigate to game page with game id in URL', async ({
+    page,
+  }) => {
     await page.goto('/');
 
     // Click the Play button
-    const playButton = page.getByRole('button', { name: /Play/i }).first();
+    const playButton = page.getByRole('link', { name: /Play/i }).first();
     await playButton.click();
 
     // Verify that we're on the game page with the correct game ID in the URL
@@ -48,11 +54,13 @@ test.describe('Home Page', () => {
     expect(count).toBeGreaterThan(0);
   });
 
-  test('game card should be clickable and navigate to game page', async ({ page }) => {
+  test('game card should be clickable and navigate to game page', async ({
+    page,
+  }) => {
     await page.goto('/');
 
     // Find and click the game card's Play button
-    const playButton = page.getByRole('button', { name: /Play/i }).first();
+    const playButton = page.getByRole('link', { name: /Play/i }).first();
     await playButton.click();
 
     // Verify navigation by checking for game page URL and elements
@@ -66,8 +74,10 @@ test.describe('Home Page', () => {
     await page.goto('/');
 
     // Check that content is still visible on mobile
-    await expect(page.getByRole('heading', { name: /Welcome to Board Games/i })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: /Welcome to Board Games/i }),
+    ).toBeVisible();
     await expect(page.getByRole('heading', { name: /Tic-Tac-Toe/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /Play/i }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /Play/i }).first()).toBeVisible();
   });
 });
