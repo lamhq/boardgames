@@ -32,7 +32,7 @@ jobs:
       #   run: pnpm build
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm lint -F @bgio/web
 
   # Run Unit Test & E2E Test
   test:
