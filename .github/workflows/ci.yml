@@ -57,10 +57,12 @@ jobs:
       - name: Install Playwright browsers
         if: ${{ matrix.package == 'web-e2e' }}
         run: pnpm exec playwright install chromium
+        shell: bash
         working-directory: apps/web-e2e
 
       - name: Run tests for ${{ matrix.package }}
         run: pnpm test -F "${{ matrix.package }}"
+        shell: bash
 
       - name: Upload e2e test report
         if: ${{ matrix.package == 'web-e2e' && !cancelled() }}
