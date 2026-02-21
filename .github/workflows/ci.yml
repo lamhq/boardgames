@@ -28,6 +28,9 @@ jobs:
       - name: Setup node environment
         uses: ./.github/actions/setup-node-env
 
+      - name: Build
+        run: pnpm build
+
       - name: Lint
         run: pnpm lint
 
