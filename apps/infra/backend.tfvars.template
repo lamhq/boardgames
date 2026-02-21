@@ -1,0 +1,5 @@
+region               = "eu-central-1"
+workspace_key_prefix = "project-name"
+bucket               = "s3-bucket-containing-terraform-states"
+key                  = "state-file-for-this-project.tfstate"
+use_lockfile         = true
