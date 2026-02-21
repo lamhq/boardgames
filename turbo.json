@@ -2,7 +2,6 @@
   "$schema": "node_modules/turbo/schema.json",
   "tasks": {
     "lint": {
-      "dependsOn": ["^build"],
       "cache": false
     },
     "test": {
