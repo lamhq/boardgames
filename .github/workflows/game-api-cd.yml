@@ -22,6 +22,9 @@ on:
     branches: [main]
     paths:
       - 'apps/game-api/**'
+      - 'packages/bgio-core/**'
+      - 'packages/bgio-server/**'
+      - 'packages/games/**'
 
 permissions:
   id-token: write # Allows OIDC token requests
