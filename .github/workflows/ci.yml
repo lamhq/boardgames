@@ -1,4 +1,4 @@
-name: Web PR Checks
+name: PR Checks
 
 env:
   BUILD_OUTPUT_PATH: apps/web/dist/
